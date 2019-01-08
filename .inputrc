@@ -1,0 +1,6 @@
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+"\C-n":history-search-forward
+"\C-p":history-search-backward
+"\e[1~": beginning-of-line
+"\e[4~": end-of-line
