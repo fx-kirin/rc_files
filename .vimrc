@@ -184,10 +184,10 @@ let NERDTreeShowHidden=1
 let NERDTreeShowBookmarks=1
 
 " Completer
-let g:completor_python_binary = '/home/zenbook/.pyenv/versions/miniconda3-4.3.30/bin/python'
+let g:completor_python_binary = '/home/zenbook/.pyenv/versions/miniconda3-4.1.11/bin/python'
 let g:completor_auto_trigger = 1
 let g:completor_complete_options = 'menuone,noselect'
-let g:completor_debug = 1
+" let g:completor_debug = 1
 inoremap <expr> <C-N> pumvisible() ? "<C-N>" : "<C-R>=completor#do('complete')<CR>"
 nnoremap <silent> <Leader>s :call completor#do('signature')<CR>
 
@@ -209,4 +209,4 @@ let g:autopep8_ignore="E402,E265"
 let g:autopep8_max_line_length=255
 let g:autopep8_disable_show_diff=1
 
-autocmd FileType python nnoremap <Leader>8 :Autopep8<CR>:w<CR>
+autocmd FileType python nnoremap <Leader>8 :Autopep8<CR>:Isort<CR>:w<CR>
