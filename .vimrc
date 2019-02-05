@@ -1,3 +1,6 @@
+" Add path to read pyenv python.
+" https://lambdalisue.hatenablog.com/entry/2014/05/21/065845
+
 set nocompatible
 set ff=unix
 set iminsert=0
@@ -81,7 +84,7 @@ if dein#check_install()
   call dein#install()
 endif
 " for debug use
-"call dein#recache_runtimepath()
+call dein#recache_runtimepath()
 
 filetype plugin indent on
 syntax enable
@@ -131,6 +134,7 @@ colorscheme monokai
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme             = 'monokai'
 let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline_section_b  = "%{g:completor_last_signature_one}%#__accent_bold#%{g:completor_last_signature_two}%#__restore__#%{g:completor_last_signature_three}"
 
 let NERDTreeIgnore = ['\.\.$', '\.$', '\.pyc$', '\.sw.$']
 let NERDTreeShowHidden=1
@@ -142,11 +146,13 @@ if isdirectory(s:local_session_directory)
   let g:session_autosave = 'yes'
   let g:session_autoload = 'yes'
   let g:session_autosave_periodic = 1
+  let g:session_autosave_silent = 1
 else
   let g:session_directory = '~/.vimsessions'
   let g:session_autosave = 'yes'
   let g:session_autoload = 'yes'
   let g:session_autosave_periodic = 1
+  let g:session_autosave_silent = 1
 endif
 unlet s:local_session_directory
 
@@ -167,7 +173,7 @@ let g:slime_default_config = {"socket_name": "default", "target_pane": "2"}
 let g:slime_dont_ask_default = 1
 nmap <F2> <Plug>SlimeLineSendgj
 nmap <F1> <Plug>SlimeLineSendgj:SlimeSend0 "\r\n"<CR>
-autocmd FileType python nmap <Leader><F2> :SlimeSend0 "from IPython import embed; embed()\n"<CR>:call IPythonEmmbedImport()<CR>
+autocmd FileType python nmap <Leader><F2> :SlimeSend0 "from IPython import embed; embed(user_ns=locals(), using=False)\n"<CR>:call IPythonEmmbedImport()<CR>
 autocmd FileType python nmap <Leader><F3> :SlimeSend1 from reload_all import reload_all;reload_all(locals())<CR>
 autocmd FileType python nmap <Leader><F4> :call IPythonEmmbedImport()<CR>
 autocmd FileType python nmap <Leader><F5> :SlimeSend0 "from reload_all import reload_all; reload_all(locals())\n"<CR>
@@ -177,6 +183,23 @@ autocmd FileType python nmap <Leader><F10> :SlimeSend0 "wine-python '".expand('%
 autocmd FileType python nmap <Leader>b :SlimeSend0 "b ".expand('%:p').":".line(".")."\n"<CR>
 autocmd FileType python nmap <F11> :SlimeSend0 "%run '".expand('%:p')."'\n"<CR>
 
+function! IPythonEmmbedImport()
+    let topline = line(1)
+    let botline = line("$")
+    let text = ""
+    for line in getline(topline, botline)
+        if line =~ "^import"
+            let text = text . line . "\n"
+        end
+        if line =~ "^from"
+            let text = text . line . "\n"
+        end
+    endfor
+    if text != ""
+        execute 'SlimeSend1 '.text
+    end
+endfunction
+
 noremap <F3> :NERDTreeToggle<CR>
 noremap <C-e> :NERDTreeFind<CR>
 let NERDTreeIgnore = ['\.\.$', '\.$', '\.pyc$', '\.sw.$']
@@ -184,13 +207,19 @@ let NERDTreeShowHidden=1
 let NERDTreeShowBookmarks=1
 
 " Completer
+let g:completor_use_airline_signature = 1
 let g:completor_python_binary = '/home/zenbook/.pyenv/versions/miniconda3-4.1.11/bin/python'
 let g:completor_auto_trigger = 1
 let g:completor_complete_options = 'menuone,noselect'
-" let g:completor_debug = 1
-inoremap <expr> <C-N> pumvisible() ? "<C-N>" : "<C-R>=completor#do('complete')<CR>"
-nnoremap <silent> <Leader>s :call completor#do('signature')<CR>
+let g:completor_debug = 1
+inoremap <silent> <expr> <C-N> pumvisible() ? "<C-N>" : "<C-R>=completor#do('complete')<CR>"
+nnoremap <silent> <Leader>ss :call completor#do('signature')<CR>
+nnoremap <silent> <Leader>si :call completor#do('signature_insert')<CR>
+nnoremap <silent> <Leader>sa :call completor#do('signature_insert_with_attributes')<CR>
+nnoremap <silent> <Leader>sf :call completor#do('definition')<CR>
+nnoremap <silent> <Leader>sd :call completor#do('doc')<CR>
 
+" Change cursol type in insert mode.
 if (executable("gconftool-2") && has("autocmd") && !has("gui_running"))
     au InsertEnter * silent execute "!echo -en \<esc>[5 q"
     au InsertLeave * silent execute "!echo -en \<esc>[2 q"
@@ -209,4 +238,11 @@ let g:autopep8_ignore="E402,E265"
 let g:autopep8_max_line_length=255
 let g:autopep8_disable_show_diff=1
 
-autocmd FileType python nnoremap <Leader>8 :Autopep8<CR>:Isort<CR>:w<CR>
+autocmd FileType python nnoremap <Leader>8 :Autopep8<CR>:w<CR>
+autocmd FileType python nnoremap <Leader>i :Isort<CR>:w<CR>
+
+if filereadable(expand("~/.vim/bundle/snake/plugin/snake.vim"))
+    source /home/zenbook/.cache/dein/repos/github.com/amoffat/snake/plugin/snake.vim
+endif
+
+
