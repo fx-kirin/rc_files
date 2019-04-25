@@ -14,6 +14,10 @@ def setup_python(ctx):
         word = snake.get_word()
         if word == 'Path':
             import_txt = 'from pathlib import Path'
+        elif word == 'pd':
+            import_txt = 'import pandas as pd'
+        elif word == 'np':
+            import_txt = 'import numpy as np'
         else:
             import_txt = 'import %s' % (word)
         snake.command("call append(line('$'), '%s')" % (import_txt))
