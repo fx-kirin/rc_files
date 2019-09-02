@@ -18,6 +18,8 @@ def setup_python(ctx):
             import_txt = 'import pandas as pd'
         elif word == 'np':
             import_txt = 'import numpy as np'
+        elif word == 'tqdm':
+            import_txt = 'from tqdm import tqdm'
         else:
             import_txt = 'import %s' % (word)
         snake.command("call append(line('$'), '%s')" % (import_txt))

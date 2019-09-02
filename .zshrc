@@ -27,7 +27,7 @@ zplugin load supercrabtree/k
 zplugin load caarlos0/zsh-mkc
 autoload -Uz vcs_info
 
-fpath=(/home/zenbook/github/zsh-completions/src $fpath)
+fpath=(/home/$USER/github/zsh-completions/src $fpath)
 autoload -U compinit
 compinit
 
@@ -79,18 +79,22 @@ bindkey "^[[1~" beginning-of-line
 bindkey "^[[4~" end-of-line
 bindkey "^[[3~" delete-char
 
+export WINEPREFIX=/home/$USER/.PlayOnLinux/wineprefix/metatrader4
+export MT4DIR=/home/$USER/.PlayOnLinux/wineprefix/metatrader4/drive_c/oanda
+
 alias rsync_diginnos_bitcoin='rsync -a -v --delete --exclude=*.o --exclude=*.so --exclude=*chrome* --exclude=*.log ~/workspace/bitcoin_trader diginnos:workspace/'
-alias wine='sudo docker exec -u user -it docker-wine wine'
-alias wine-python='sudo docker exec -u user -it docker-wine wine python'
-alias jd='sh /home/zenbook/2chproxy.pl/jd.sh'
+alias wine='WINEPREFIX=/home/'$USER'/.PlayOnLinux/wineprefix/metatrader4 WINEARCH="win32" /home/'$USER'/.PlayOnLinux/wine/linux-x86/4.14/bin/wine'
+alias wine-python='WINEPREFIX=/home/'$USER'/.PlayOnLinux/wineprefix/metatrader4 WINEARCH="win32" /home/'$USER'/.PlayOnLinux/wine/linux-x86/4.14/bin/wine python'
+alias wine-pip='WINEPREFIX=/home/'$USER'/.PlayOnLinux/wineprefix/metatrader4 WINEARCH="win32" /home/'$USER'/.PlayOnLinux/wine/linux-x86/4.14/bin/wine python -m pip'
+alias jd='sh /home/'$USER'/2chproxy.pl/jd.sh'
 alias cloud_mount='~/scripts/mount_cloud.py'
-alias ethel_balance_all='python /media/zenbook/Kazma/UserFile/CloudStation/workspace/bitcoin_trader/scripts/get_all_account_balance.py'
+alias ethel_balance_all='python /media/'$USER'/Kazma/UserFile/CloudStation/workspace/bitcoin_trader/scripts/get_all_account_balance.py'
 alias e='eigo'
 alias ipython='ptipython'
 alias pip3='python3 -m pip'
 alias sdmusic='python3 -m sd_music.start'
 alias aria='aria2c -x 8 -s 8'
-alias nemohere='PAHT=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/go/bin:/home/zenbook/go/bin nohup nemo . > /dev/null 2>&1 &'
+alias nemohere='PAHT=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/go/bin:/home/'$USER'/go/bin nohup nemo . > /dev/null 2>&1 &'
 alias symount='sudo sshfs -o allow_other -oIdentityFile=/root/ssh_keys/synology synology@192.168.100.106:/ /media/synology'
 alias rymount='sudo sshfs -o allow_other -oIdentityFile=/root/ssh_keys/ryzen ryzen@192.168.100.111:/home/ryzen /media/ryzen -p 9822'
 alias gis='git status -uall -s'
@@ -98,7 +102,6 @@ alias gull='git pull origin master'
 alias gush='git push origin master'
 alias ra='ranger --choosedir=$HOME/rangerdir; LASTDIR=`cat $HOME/rangerdir`; cd "$LASTDIR"'
 alias ranger='ranger --choosedir=$HOME/rangerdir; LASTDIR=`cat $HOME/rangerdir`; cd "$LASTDIR"'
-alias newtab='guake -n NEW_TAB -e "cd \"$(readlink -f .)\""'
 
 eval "$(dircolors -b ~/.dircolors)"
 
@@ -119,4 +122,16 @@ if [ ~/.zshrc -nt ~/.zshrc.zwc ]; then
 fi
 
 # added by pipx (https://github.com/pipxproject/pipx)
-export PATH="/home/zenbook/.local/bin:$PATH"
+export PATH="/home/"$USER"/.local/bin:$PATH"
+
+if [ $USER != "zembook" ]; then
+    alias newtab='guake -n NEW_TAB -e "cd \"$(readlink -f .)\""'
+    alias pwork='(guake -r Python > /dev/null 2>&1 &);cd $PYTHON_WORKSPACE && vim'
+
+    # Command ssh with alias
+    alias ssh='(){(test $(tmux list-panes | wc -l) -eq 1 && guake -r $1 &); ssh $@}'
+    compdef ssh='ssh'
+    setopt complete_aliases
+fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
