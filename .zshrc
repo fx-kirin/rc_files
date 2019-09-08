@@ -11,7 +11,7 @@ autoload -Uz _zplugin
 (( ${+_comps} )) && _comps[zplugin]=_zplugin
 # End of Zplugin's installer chunk
 
-export ENHANCD_DISABLE_HOME=0
+export ENHANCD_DISABLE_HOME=1
 export ENHANCD_HOME_ARG=,
 export ENHANCD_DOT_ARG=...
 export ENHANCD_HYPHEN_ARG=--
@@ -20,11 +20,12 @@ zplugin load momo-lab/zsh-abbrev-alias # 略語を展開する
 zplugin load zsh-users/zsh-completions # 補完
 zplugin load zsh-users/zsh-syntax-highlighting
 zplugin load mollifier/cd-gitroot # git root
-zplugin load b4b4r07/enhancd
 zplugin load jimeh/zsh-peco-history
 zplugin load woefe/git-prompt.zsh
 zplugin load supercrabtree/k
 zplugin load caarlos0/zsh-mkc
+zplugin ice ver"fix-home-arg-config"
+zplugin load matsuhav/enhancd
 autoload -Uz vcs_info
 
 fpath=(/home/$USER/github/zsh-completions/src $fpath)
