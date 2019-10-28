@@ -24,8 +24,9 @@ zplugin load jimeh/zsh-peco-history
 zplugin load woefe/git-prompt.zsh
 zplugin load supercrabtree/k
 zplugin load caarlos0/zsh-mkc
+zplugin load docker/cli
 zplugin ice ver"fix-home-arg-config"
-zplugin load matsuhav/enhancd
+zplugin load b4b4r07/enhancd
 autoload -Uz vcs_info
 
 fpath=(/home/$USER/github/zsh-completions/src $fpath)
@@ -45,7 +46,16 @@ zstyle ':completion:*' menu select # Highlighting tab selection.
 
 autoload -Uz colors
 colors
-precmd() { print -rP "%{$fg[yellow]%}|%D %*|%{$fg_bold[green]%}%n%{${reset_color}%}:%{$fg_bold[blue]%~%{${reset_color}%}" }
+if [ $USER == "zenbook" ]; then
+    precmd() { 
+        print -rP "%{$fg[yellow]%}|%D %*|%{$fg_bold[green]%}%n%{${reset_color}%}:%{$fg_bold[blue]%~%{${reset_color}%}";
+        (test $(tmux list-panes | wc -l) -eq 1 && guake -r $(whoami) &)
+    }
+else
+    precmd() { 
+        print -rP "%{$fg[yellow]%}|%D %*|%{$fg_bold[green]%}%n%{${reset_color}%}:%{$fg_bold[blue]%~%{${reset_color}%}";
+    }
+fi
 export PROMPT="$ "
 export RPROMPT='$(gitprompt)'
 
@@ -123,16 +133,18 @@ if [ ~/.zshrc -nt ~/.zshrc.zwc ]; then
 fi
 
 # added by pipx (https://github.com/pipxproject/pipx)
-export PATH="/home/"$USER"/.local/bin:$PATH"
+export PATH="/home/"$USER"/.local/bin:$PATH:$HOME/.skim/bin"
+export WELD_HOME=/home/zenbook/github/weld
 
-if [ $USER != "zembook" ]; then
+if [ $USER == "zenbook" ]; then
+    alias gitpitch='docker run -it -v /home/zenbook/gitpitch_presentations:/repo -p 9000:9000 gitpitch/desktop:pro'
     alias newtab='guake -n NEW_TAB -e "cd \"$(readlink -f .)\""'
     alias pwork='(guake -r Python > /dev/null 2>&1 &);cd $PYTHON_WORKSPACE && vim'
-
-    # Command ssh with alias
     alias ssh='(){(test $(tmux list-panes | wc -l) -eq 1 && guake -r $1 &); ssh $@}'
     compdef ssh='ssh'
     setopt complete_aliases
 fi
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+[[ $- == *i* ]] && source "/home/zenbook/.skim/shell/completion.zsh" 2> /dev/null
+source "/home/$USER/.skim/shell/key-bindings.zsh"
