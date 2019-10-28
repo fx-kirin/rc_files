@@ -1,0 +1,139 @@
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+[[plugins]]
+repo = 'SCROoloose/nerdtree'
+
+[[plugins]]
+repo = 'sickill/vim-monokai'
+
+[[plugins]]
+repo = 'bling/vim-airline'
+
+[[plugins]]
+repo = 'vim-airline/vim-airline-themes'
+
+[[plugins]]
+repo = 'rcabralc/monokai-airline.vim'
+
+[[plugins]]
+repo = 'yegappan/mru'
+
+[[plugins]]
+repo = 'honza/vim-snippets'
+
+[[plugins]]
+repo = 'vim-scripts/BufOnly.vim'
+
+[[plugins]]
+repo = 'jiangmiao/auto-pairs'
+
+[[plugins]]
+repo = 'tpope/vim-surround'
+
+[[plugins]]
+repo = 'tpope/vim-repeat'
+
+[[plugins]]
+repo = 'fx-kirin/nerdtree-yank-path'
+
+[[plugins]]
+repo = 'fx-kirin/vim-slime'
+
+[[plugins]]
+repo = 'fx-kirin/vim-template'
+
+[[plugins]]
+repo = 'SirVer/ultisnips'
+
+[[plugins]]
+repo = 'fx-kirin/completor.vim'
+
+[[plugins]]
+repo = 'ferreum/completor-tmux'
+
+[[plugins]]
+repo = 'fx-kirin/vim-session'
+depends = ['xolox/vim-misc']
+
+[[plugins]]
+repo = 'xolox/vim-misc'
+
+
+[[plugins]]
+repo = 'yami-beta/asyncomplete-omni.vim'
+
+[[plugins]]
+repo = 'tpope/vim-abolish'
+
+# Asynchronous linting/fixing for Vim
+[[plugins]]
+repo = 'w0rp/ale'
+
+[[plugins]]
+repo = 'moznion/hateblo.vim'
+
+[[plugins]]
+repo = 'amoffat/snake'
+
+[[plugins]]
+repo = 'TaDaa/vimade'
+
+[[plugins]]
+repo = 'wincent/terminus'
+
+[[plugins]]
+repo = 'Shougo/denite.nvim'
+rev = '2.0'
+
+[[plugins]]
+repo = 'roxma/nvim-yarp'
+
+[[plugins]]
+repo = 'roxma/vim-hug-neovim-rpc'
+
+[[plugins]]
+repo = 'Shougo/neomru.vim'
+
+[[plugins]]
+repo = 'tpope/vim-fugitive' # show git status
+
+[[plugins]]
+repo = 'mhinz/vim-signify'
+
+[[plugins]]
+repo = 'jreybert/vimagit'
+
+[[plugins]]
+repo = 'Xuyuanp/nerdtree-git-plugin'
+
+[[plugins]]
+repo = 'vobornik/vim-mql4'
+
+[[plugins]]
+repo = 'haya14busa/dein-command.vim'
+
+[[plugins]]
+repo = 'tpope/vim-commentary'
+
+# refactoring tool
+[[plugins]]
+repo = 'fx-kirin/python-mode'
+
+[[plugins]]
+repo = 'lambdalisue/vim-pyenv'
+
+[[plugins]]
+repo = 'haya14busa/vim-debugger'
+
+[[plugins]]
+repo = 'frioux/vim-regedit'
+
+[[plugins]]
+repo = 'fx-kirin/kanisnippets'
+
+[[plugins]]
+repo = 'tell-k/vim-autopep8'
+
+[[plugins]]
+repo = 'fisadev/vim-isort'
