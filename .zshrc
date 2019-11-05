@@ -15,6 +15,7 @@ export ENHANCD_DISABLE_HOME=1
 export ENHANCD_HOME_ARG=,
 export ENHANCD_DOT_ARG=...
 export ENHANCD_HYPHEN_ARG=--
+export ENHANCD_FILTER=sk:fzf
 
 zplugin load momo-lab/zsh-abbrev-alias # 略語を展開する
 zplugin load zsh-users/zsh-completions # 補完
@@ -25,7 +26,6 @@ zplugin load woefe/git-prompt.zsh
 zplugin load supercrabtree/k
 zplugin load caarlos0/zsh-mkc
 zplugin load docker/cli
-zplugin ice ver"fix-home-arg-config"
 zplugin load b4b4r07/enhancd
 autoload -Uz vcs_info
 
@@ -140,6 +140,7 @@ if [ $USER == "zenbook" ]; then
     alias gitpitch='docker run -it -v /home/zenbook/gitpitch_presentations:/repo -p 9000:9000 gitpitch/desktop:pro'
     alias newtab='guake -n NEW_TAB -e "cd \"$(readlink -f .)\""'
     alias pwork='(guake -r Python > /dev/null 2>&1 &);cd $PYTHON_WORKSPACE && vim'
+    alias rwork='(guake -r Rust > /dev/null 2>&1 &);cd $RUST_WORKSPACE && vim'
     alias ssh='(){(test $(tmux list-panes | wc -l) -eq 1 && guake -r $1 &); ssh $@}'
     compdef ssh='ssh'
     setopt complete_aliases
@@ -148,3 +149,4 @@ fi
 
 [[ $- == *i* ]] && source "/home/zenbook/.skim/shell/completion.zsh" 2> /dev/null
 source "/home/$USER/.skim/shell/key-bindings.zsh"
+

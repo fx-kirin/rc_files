@@ -47,12 +47,6 @@ repo = 'fx-kirin/vim-template'
 repo = 'SirVer/ultisnips'
 
 [[plugins]]
-repo = 'fx-kirin/completor.vim'
-
-[[plugins]]
-repo = 'ferreum/completor-tmux'
-
-[[plugins]]
 repo = 'fx-kirin/vim-session'
 depends = ['xolox/vim-misc']
 
@@ -137,3 +131,53 @@ repo = 'tell-k/vim-autopep8'
 
 [[plugins]]
 repo = 'fisadev/vim-isort'
+
+[[plugins]]
+repo = 'roxma/vim-hug-neovim-rpc'
+
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+
+[[plugins]]
+repo = 'deoplete-plugins/deoplete-jedi'
+
+[[plugins]]
+repo = 'Shougo/echodoc.vim'
+
+[[plugins]]
+repo = 'wellle/tmux-complete.vim'
+
+[[plugins]]
+repo = 'racer-rust/vim-racer'
+hook_source = '''
+    let g:racer_cmd = '/home/'.$USER.'/.cargo/bin/racer'
+    let $RUST_SRC_PATH=systemlist('rustc --print sysroot')[0].'/lib/rustlib/src/rust/src'
+'''
+
+[[plugins]]
+repo = 'rust-lang/rust.vim'
+on_ft = 'rust'
+hook_source = '''
+    let g:rustfmt_autosave = 1
+    let g:rust_doc#define_map_K = 0
+'''
+
+[[plugins]]
+repo = 'sebastianmarkow/deoplete-rust'
+on_ft = 'rust'
+depends = ['deoplete.nvim']
+hook_source = '''
+    let g:deoplete#sources#rust#racer_binary=systemlist('which racer')[0]
+    let g:deoplete#sources#rust#rust_source_path=systemlist('rustc --print sysroot')[0].'/lib/rustlib/src/rust/src'
+    let $RUST_SRC_PATH=systemlist('rustc --print sysroot')[0].'/lib/rustlib/src/rust/src'
+    let g:deoplete#sources#rust#show_duplicates=1
+    let g:deoplete#sources#rust#disable_keymap=1
+    nmap <buffer> gd <plug>DeopleteRustGoToDefinitionDefault
+    nmap <buffer> K  <plug>DeopleteRustShowDocumentation
+'''
+
+[[plugins]]
+repo = 'fx-kirin/completor.vim'
+
+[[plugins]]
+repo = 'ferreum/completor-tmux'
