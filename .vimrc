@@ -1,6 +1,8 @@
 " Add path to read pyenv python.
 " https://lambdalisue.hatenablog.com/entry/2014/05/21/065845
 
+let g:username="fx-kirin"
+let g:email="fx.kirin@gmail.com"
 set nocompatible
 set ff=unix
 set iminsert=0
@@ -9,7 +11,7 @@ set encoding=utf-8
 scriptencoding utf-8
 set fileencoding=utf-8
 set fileencodings=ucs-boms,utf-8,euc-jp,cp932
-set fileformats=unix,dos,mac
+set fileformats=unix,mac,dos
 set ambiwidth=double
 set magic
 syntax on
@@ -27,12 +29,16 @@ set incsearch
 set hlsearch
 set autochdir
 set undodir=~/.vimundo
-set directory=~/.vimswap
+set directory=~/.vimswap//
 set undofile
 set guitablabel=%t
 set cursorline
 set hidden " Allows us to open a new buffer without saving
 set noshowmode " delete '— INSERT --' text 
+set history=10000
+
+set foldmethod=indent  "折りたたみ範囲の判断基準（デフォルト: manual）
+set foldlevel=99        "ファイルを開いたときにデフォルトで折りたたむレベル
 
 nnoremap j gj
 nnoremap k gk
@@ -45,6 +51,9 @@ vnoremap k gk
 vnoremap <Down> gj
 vnoremap <Up>   gk
 
+" Search selected word in a visual mode
+vnoremap * y/\<\V<C-r>=escape(@",'/\')<CR>\><CR>
+
 " To Use vim-surround
 nmap sa <Plug>Ysurround
 nmap sd <Plug>Dsurround
@@ -52,6 +61,9 @@ nmap sc <Plug>Csurround
 
 " to make arrow key works correctly
 
+" ALE setting
+let g:ale_python_pyre_use_global=1
+let g:airline#extensions#ale#enabled = 1
 
 " s - DeinVim Install
 if &compatible
@@ -64,34 +76,52 @@ if dein#load_state('~/.cache/dein')
     call dein#begin('~/.cache/dein')
 
     call dein#add('~/.cache/dein/repos/github.com/Shougo/dein.vim')
-    if !has('nvim')
-        " プラグインリストを収めた TOML ファイル
-        " 予め TOML ファイル（後述）を用意しておく
-        let g:rc_dir = expand('~/.vim/rc')
-        let s:toml = g:rc_dir . '/dein.toml'
-        let s:lazy_toml = g:rc_dir . '/dein_lazy.toml'
+    " プラグインリストを収めた TOML ファイル
+    " 予め TOML ファイル（後述）を用意しておく
+    let g:rc_dir = expand('~/.vim/rc')
+    let s:toml = g:rc_dir . '/dein.toml'
+    let s:lazy_toml = g:rc_dir . '/dein_lazy.toml'
 
-        " TOML を読み込み、キャッシュしておく
-        call dein#load_toml(s:toml, {'lazy': 0})
-        call dein#load_toml(s:lazy_toml, {'lazy': 1})
-    endif
+    " TOML を読み込み、キャッシュしておく
+    call dein#load_toml(s:toml, {'lazy': 0})
+    call dein#load_toml(s:lazy_toml, {'lazy': 1})
 
     call dein#end()
     call dein#save_state()
+    call dein#call_hook('source')
+    call dein#check_lazy_plugins()
 endif
 
 if dein#check_install()
   call dein#install()
 endif
-" for debug use
-call dein#recache_runtimepath()
+
+let output1=system("stat -c '%Y' ~/.cache/dein/repos")
+let output2=system("stat -c '%Y' ~/.vimrc")
+let modified_date_filename=$HOME."/.vimrc_last_modified_date"
+if filereadable(modified_date_filename)
+    let lastdate=readfile(modified_date_filename)[0]
+else
+    let lastdate=0
+endif
+if output1 > output2
+    let modified_date=output1
+else
+    let modified_date=output2
+endif
+let whoami=system('whoami')
+if modified_date > lastdate && whoami =~ 'zenbook'
+    call dein#recache_runtimepath()
+    call writefile([modified_date], modified_date_filename)
+endif
 
 filetype plugin indent on
 syntax enable
 " e - DeinVim Install
+
 let mapleader = "\<Space>"
 
-inoremap kj <ESC>
+inoremap kj <ESC><C-l>
 nnoremap <C-Right> :if &ft != "nerdtree" \| :bn! \| endif<CR>
 nnoremap <C-Left> :if &ft != "nerdtree" \| :bp! \| endif<CR>
 nnoremap <C-Down> :bp\|bd #<CR>
@@ -110,11 +140,15 @@ vnoremap <Leader>p "+p
 vnoremap <Leader>P "+P
 nnoremap <C-j> <C-F>
 nnoremap <C-k> <C-B>
+vnoremap <C-j> <C-F>
+vnoremap <C-k> <C-B>
 nnoremap \j :res +5<CR>
 nnoremap \k :res -5<CR>
 nnoremap \h :vertical resize +5<CR>
 nnoremap \l :vertical resize -5<CR>
-nnoremap <Leader>w :w<CR>
+nnoremap <silent><Leader>w :w<CR>
+nnoremap <silent><Leader>q :q<CR>
+cmap w!! w !sudo tee % >/dev/null
 
 " Back to the beginning of selection
 vnoremap <silent> y y`]
@@ -128,13 +162,16 @@ autocmd FileType ruby set softtabstop=2
 autocmd FileType mql4 set shiftwidth=3
 autocmd FileType mql4 set tabstop=3
 autocmd FileType mql4 set softtabstop=3
+autocmd FileType yaml set shiftwidth=2
+autocmd FileType yaml set tabstop=2
+autocmd FileType yaml set softtabstop=2
 
 colorscheme monokai
 
-let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme             = 'monokai'
+let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
-let g:airline_section_b  = "%{g:completor_last_signature_one}%#__accent_bold#%{g:completor_last_signature_two}%#__restore__#%{g:completor_last_signature_three}"
+let g:airline#extensions#tabline#show_tabs = 0
 
 let NERDTreeIgnore = ['\.\.$', '\.$', '\.pyc$', '\.sw.$']
 let NERDTreeShowHidden=1
@@ -143,18 +180,17 @@ let NERDTreeShowBookmarks=1
 let s:local_session_directory = xolox#misc#path#merge(getcwd(), '.vimsessions')
 if isdirectory(s:local_session_directory)
   let g:session_directory = s:local_session_directory
-  let g:session_autosave = 'yes'
-  let g:session_autoload = 'yes'
-  let g:session_autosave_periodic = 1
-  let g:session_autosave_silent = 1
 else
   let g:session_directory = '~/.vimsessions'
-  let g:session_autosave = 'yes'
-  let g:session_autoload = 'yes'
-  let g:session_autosave_periodic = 1
-  let g:session_autosave_silent = 1
 endif
 unlet s:local_session_directory
+
+set sessionoptions-=help
+let g:session_autosave = 'yes'
+let g:session_autoload = 'yes'
+let g:session_autosave_periodic = 1
+let g:session_autosave_silent = 1
+let g:session_verbose_messages = 0
 
 if !exists("g:load_only_once_for_vim_session")
 augroup PluginSession
@@ -177,11 +213,20 @@ autocmd FileType python nmap <Leader><F2> :SlimeSend0 "from IPython import embed
 autocmd FileType python nmap <Leader><F3> :SlimeSend1 from reload_all import reload_all;reload_all(locals())<CR>
 autocmd FileType python nmap <Leader><F4> :call IPythonEmmbedImport()<CR>
 autocmd FileType python nmap <Leader><F5> :SlimeSend0 "from reload_all import reload_all; reload_all(locals())\n"<CR>
+autocmd FileType python nmap <Leader><F6> :SlimeSend0 "%run '".expand('%:p')."'\n"<CR>
 xmap <F2> <Plug>SlimeRegionSend
 autocmd FileType python nmap <F10> :SlimeSend0 "python '".expand('%:p')."'\n"<CR>
-autocmd FileType python nmap <Leader><F10> :SlimeSend0 "wine-python '".expand('%:p')."'\n"<CR>
+autocmd FileType python nmap <Leader><F10> :SlimeSend0 "\e[A\n"<CR>
 autocmd FileType python nmap <Leader>b :SlimeSend0 "b ".expand('%:p').":".line(".")."\n"<CR>
-autocmd FileType python nmap <F11> :SlimeSend0 "%run '".expand('%:p')."'\n"<CR>
+autocmd FileType python nmap <F12> :SlimeSend0 "wine-python '".expand('%:p')."'\n"<CR>
+
+autocmd FileType rust nmap <F4> :SlimeSend0 "cargo test\n"<CR>
+autocmd FileType rust nmap <F5> :SlimeSend0 "cargo with rust-lldb -- test --test ".expand('%:t:r')."\n"<CR>
+autocmd FileType rust nmap <F6> :SlimeSend0 "cargo with rust-gdbgui -- test --test ".expand('%:t:r')."\n"<CR>
+autocmd FileType rust nmap <F10> :SlimeSend0 "cargo run\n"<CR>
+autocmd FileType rust nmap <Leader>b :SlimeSend0 "b ".expand('%:p').":".line(".")."\n"<CR>
+
+autocmd FileType mql4 nmap <F10> :SlimeSend0 "mqlcompile '".expand('%:p')."'\n"<CR>
 
 function! IPythonEmmbedImport()
     let topline = line(1)
@@ -206,24 +251,24 @@ let NERDTreeIgnore = ['\.\.$', '\.$', '\.pyc$', '\.sw.$']
 let NERDTreeShowHidden=1
 let NERDTreeShowBookmarks=1
 
-" Completer
-let g:completor_use_airline_signature = 1
+" deoplete
+set completeopt+=noinsert
+set completeopt-=preview
+let g:deoplete#sources#jedi#python_path = $HOME.'/.pyenv/versions/miniconda3-4.1.11/bin/python'
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_ignore_case = 1
+let g:deoplete#enable_smart_case = 1
+let g:deoplete#sources#jedi#show_docstring = 0
+let g:echodoc#enable_at_startup = 1
+
+" Completor
 let g:completor_python_binary = '/home/zenbook/.pyenv/versions/miniconda3-4.1.11/bin/python'
-let g:completor_auto_trigger = 1
-let g:completor_complete_options = 'menuone,noselect'
-let g:completor_debug = 1
-inoremap <silent> <expr> <C-N> pumvisible() ? "<C-N>" : "<C-R>=completor#do('complete')<CR>"
+let g:completor_racer_binary = '/home/zenbook/.cargo/bin/racer'
 nnoremap <silent> <Leader>ss :call completor#do('signature')<CR>
 nnoremap <silent> <Leader>si :call completor#do('signature_insert')<CR>
 nnoremap <silent> <Leader>sa :call completor#do('signature_insert_with_attributes')<CR>
-nnoremap <silent> <Leader>sf :call completor#do('definition')<CR>
+nnoremap <silent> <Leader>sj :call completor#do('definition')<CR>
 nnoremap <silent> <Leader>sd :call completor#do('doc')<CR>
-
-" Change cursol type in insert mode.
-if (executable("gconftool-2") && has("autocmd") && !has("gui_running"))
-    au InsertEnter * silent execute "!echo -en \<esc>[5 q"
-    au InsertLeave * silent execute "!echo -en \<esc>[2 q"
-endif
 
 if executable('pyls')
     au User lsp_setup call lsp#register_server({
@@ -237,12 +282,48 @@ endif
 let g:autopep8_ignore="E402,E265"
 let g:autopep8_max_line_length=255
 let g:autopep8_disable_show_diff=1
+let g:black_linelength=255
 
 autocmd FileType python nnoremap <Leader>8 :Autopep8<CR>:w<CR>
 autocmd FileType python nnoremap <Leader>i :Isort<CR>:w<CR>
 
+let g:pymode_python = 'python3'
+let g:pymode_rope = 1 " enable rope
+let g:pymode_lint_cwindow = 0 "disabling Quickfix windows
+let g:pymode_options_colorcolumn = 0 " Disabling color column
+let g:pymode_lint = 0
+let g:pymode_breakpoint = 0
+let g:pymode_rope_completion = 0
+let g:pymode_rope_complete_on_dot = 0
+let g:pymode_rope_autoimport_import_after_complete = 0
+let g:pymode_run_bind = '<F15>'
+let g:pymode_rope_regenerate_on_write = 0
+
+let g:neomru#do_validate = 0
+let g:neomru#file_mru_ignore_pattern = '\~$\|\.\%(o\|exe\|dll\|bak\|zwc\|pyc\|sw[po]\)$\|\%(^\|/\)\.\%(hg\|git\|bzr\|svn\)\%($\|/\)\|^\%(\\\\\|/mnt/\|/temp/\|/tmp/\|\%(/private\)\=/var/folders/\)\|\%(^\%(fugitive\)://\)\|\%(^\%(term\)://\)'
+let g:neomru#directory_mru_ignore_pattern = '\%(^\|/\)\.\%(hg\|git\|bzr\|svn\)\%($\|/\)\|^\%(\\\\\|/mnt/\|/temp/\|/tmp/\|\%(/private\)\=/var/folders/\)'
+
+nnoremap <silent> <Leader>uy :Denite history/yank<CR>
+nnoremap <silent> <Leader>ub :Denite buffer<CR>
+nnoremap <silent> <Leader>ud :Denite directory_mru<CR>
+nnoremap <silent> <Leader>ur :Denite -buffer-name=register register<CR>
+nnoremap <silent> <Leader>uf :Denite -path=/media/zenbook/Kazma/UserFile/CloudStation/workspace file/rec<CR>
+nnoremap <silent> <Leader>uu :Denite file_mru buffer<CR>
+nnoremap <silent> <Leader>ua :Denite -resume<CR>
+call denite#custom#map('insert', 'kj', '<denite:enter_mode:normal>', 'noremap')
+call denite#custom#map('insert', '<C-N>', '<denite:move_to_next_line>', 'noremap')
+call denite#custom#map('insert', '<C-P>', '<denite:move_to_previous_line>', 'noremap')
+call denite#custom#map('normal', '<C-J>', '<denite:scroll_page_forwards>', 'noremap')
+call denite#custom#map('normal', '<C-K>', '<denite:scroll_page_backwards>', 'noremap')
+
+" to fix vimade bug
+let g:vimade = {}
+let g:vimade.detecttermcolors=0
+let g:vimade.fadelevel=0.5
+
+nnoremap <silent> <Leader>f :vertical resize 31<CR>
+nnoremap <F1> :UndotreeToggle<cr>
+
 if filereadable(expand("~/.vim/bundle/snake/plugin/snake.vim"))
     source /home/zenbook/.cache/dein/repos/github.com/amoffat/snake/plugin/snake.vim
 endif
-
-
