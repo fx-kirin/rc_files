@@ -34,10 +34,10 @@ autoload -U compinit
 compinit
 
 alias ed='cd ,'
-alias ll='ls -alF'
+alias ll='exa -hl --git --git-ignore'
 alias la='ls -A'
 alias l='ls -CF'
-alias ls='ls --color=auto'
+alias ls='exa '
 alias grep='grep --color=auto -i'
 alias fgrep='fgrep --color=auto -i'
 alias egrep='egrep --color=auto -i'
@@ -49,7 +49,7 @@ colors
 if [ $USER == "zenbook" ]; then
     precmd() { 
         print -rP "%{$fg[yellow]%}|%D %*|%{$fg_bold[green]%}%n%{${reset_color}%}:%{$fg_bold[blue]%~%{${reset_color}%}";
-        (test $(tmux list-panes | wc -l) -eq 1 && guake -r $(whoami) &)
+        (if [ -z $FROMBASH ];then test $(tmux list-panes | wc -l) -eq 1 && guake -r $(whoami) & fi;)
     }
 else
     precmd() { 
@@ -141,7 +141,7 @@ if [ $USER == "zenbook" ]; then
     alias newtab='guake -n NEW_TAB -e "cd \"$(readlink -f .)\""'
     alias pwork='(guake -r Python > /dev/null 2>&1 &);cd $PYTHON_WORKSPACE && vim'
     alias rwork='(guake -r Rust > /dev/null 2>&1 &);cd $RUST_WORKSPACE && vim'
-    alias ssh='(){(test $(tmux list-panes | wc -l) -eq 1 && guake -r $1 &); ssh $@}'
+    alias ssh='(){if [ -z $FROMBASH ];then (test $(tmux list-panes | wc -l) -eq 1 && guake -r $1 &);fi; ssh $@} '
     compdef ssh='ssh'
     setopt complete_aliases
 fi

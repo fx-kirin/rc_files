@@ -64,6 +64,7 @@ nmap sc <Plug>Csurround
 " ALE setting
 let g:ale_python_pyre_use_global=1
 let g:airline#extensions#ale#enabled = 1
+let g:ale_linters = {'rust': ['cargo', 'rustfmt', 'rls']}
 
 " s - DeinVim Install
 if &compatible
@@ -96,11 +97,12 @@ if dein#check_install()
   call dein#install()
 endif
 
-let output1=system("stat -c '%Y' ~/.cache/dein/repos")
-let output2=system("stat -c '%Y' ~/.vimrc")
+let output1=system("find -L ".$HOME."/.cache/dein/repos/github.com/fx-kirin -printf '%T@\\n' | sort -r | head -n 1")[:-2]
+let output2=system("stat -L -c '%Y' ~/.vimrc")[:-2]
 let modified_date_filename=$HOME."/.vimrc_last_modified_date"
 if filereadable(modified_date_filename)
     let lastdate=readfile(modified_date_filename)[0]
+
 else
     let lastdate=0
 endif
@@ -122,22 +124,22 @@ syntax enable
 let mapleader = "\<Space>"
 
 inoremap kj <ESC><C-l>
-nnoremap <C-Right> :if &ft != "nerdtree" \| :bn! \| endif<CR>
-nnoremap <C-Left> :if &ft != "nerdtree" \| :bp! \| endif<CR>
-nnoremap <C-Down> :bp\|bd #<CR>
-nnoremap <Leader>l :if &ft != "nerdtree" \| :bn! \| endif<CR>
-nnoremap <Leader>h :if &ft != "nerdtree" \| :bp! \| endif<CR>
-nnoremap <Leader>d :bp\|bd #<CR>
-nnoremap <Leader>D :BufOnly<CR>
-nnoremap <Leader>j <C-w><C-w>
-nnoremap <Leader>k <C-w>W
-vnoremap <Leader>y "+y
-nnoremap <Leader>y "+y
-vnoremap <Leader>d "+d
-nnoremap <Leader>p "+p
-nnoremap <Leader>P "+P
-vnoremap <Leader>p "+p
-vnoremap <Leader>P "+P
+nnoremap <silent> <C-Right> :if &ft != "nerdtree" \| :bn! \| endif<CR>
+nnoremap <silent> <C-Left> :if &ft != "nerdtree" \| :bp! \| endif<CR>
+nnoremap <silent> <C-Down> :bp\|bd #<CR>
+nnoremap <silent> <Leader>l :if &ft != "nerdtree" \| :bn! \| endif<CR>
+nnoremap <silent> <Leader>h :if &ft != "nerdtree" \| :bp! \| endif<CR>
+nnoremap <silent> <Leader>d :bp\|bd #<CR>
+nnoremap <silent> <Leader>D :BufOnly<CR>
+nnoremap <silent> <Leader>j <C-w><C-w>
+nnoremap <silent> <Leader>k <C-w>W
+vnoremap <silent> <Leader>y "+y
+nnoremap <silent> <Leader>y "+y
+vnoremap <silent> <Leader>d "+d
+nnoremap <silent> <Leader>p "+p
+nnoremap <silent> <Leader>P "+P
+vnoremap <silent> <Leader>p "+p
+vnoremap <silent> <Leader>P "+P
 nnoremap <C-j> <C-F>
 nnoremap <C-k> <C-B>
 vnoremap <C-j> <C-F>
@@ -194,10 +196,10 @@ let g:session_verbose_messages = 0
 
 if !exists("g:load_only_once_for_vim_session")
 augroup PluginSession
-  au VimEnter * nested call xolox#session#auto_load()
-  au VimLeavePre * call xolox#session#auto_save()
-  au VimLeavePre * call xolox#session#auto_unlock()
-  au BufEnter * call xolox#session#auto_dirty_check()
+  au VimEnter * nested silent! call xolox#session#auto_load()
+  au VimLeavePre * silent! call xolox#session#auto_save()
+  au VimLeavePre * silent! call xolox#session#auto_unlock()
+  au BufEnter * silent! call xolox#session#auto_dirty_check()
 augroup END
 let g:load_only_once_for_vim_session = 1
 endif
@@ -205,10 +207,13 @@ endif
 " Tmux Slime Settings
 let g:slime_target = "tmux"
 let g:slime_python_ipython = 1
-let g:slime_default_config = {"socket_name": "default", "target_pane": "2"}
+let g:slime_default_config = {"socket_name": "default", "target_pane": "vim-output:1.1"}
 let g:slime_dont_ask_default = 1
+nmap <F1> :SlimeSend0 "\e[A\n"<CR>
 nmap <F2> <Plug>SlimeLineSendgj
-nmap <F1> <Plug>SlimeLineSendgj:SlimeSend0 "\r\n"<CR>
+nnoremap <silent> <F8> :SlimeSend0 "cd '".expand('%:p:h')."'\n"<CR>
+nnoremap <silent> <Leader><F8> :SlimeSend0 "cd ..\n"<CR>
+
 autocmd FileType python nmap <Leader><F2> :SlimeSend0 "from IPython import embed; embed(user_ns=locals(), using=False)\n"<CR>:call IPythonEmmbedImport()<CR>
 autocmd FileType python nmap <Leader><F3> :SlimeSend1 from reload_all import reload_all;reload_all(locals())<CR>
 autocmd FileType python nmap <Leader><F4> :call IPythonEmmbedImport()<CR>
@@ -216,17 +221,20 @@ autocmd FileType python nmap <Leader><F5> :SlimeSend0 "from reload_all import re
 autocmd FileType python nmap <Leader><F6> :SlimeSend0 "%run '".expand('%:p')."'\n"<CR>
 xmap <F2> <Plug>SlimeRegionSend
 autocmd FileType python nmap <F10> :SlimeSend0 "python '".expand('%:p')."'\n"<CR>
-autocmd FileType python nmap <Leader><F10> :SlimeSend0 "\e[A\n"<CR>
 autocmd FileType python nmap <Leader>b :SlimeSend0 "b ".expand('%:p').":".line(".")."\n"<CR>
 autocmd FileType python nmap <F12> :SlimeSend0 "wine-python '".expand('%:p')."'\n"<CR>
 
-autocmd FileType rust nmap <F4> :SlimeSend0 "cargo test\n"<CR>
-autocmd FileType rust nmap <F5> :SlimeSend0 "cargo with rust-lldb -- test --test ".expand('%:t:r')."\n"<CR>
-autocmd FileType rust nmap <F6> :SlimeSend0 "cargo with rust-gdbgui -- test --test ".expand('%:t:r')."\n"<CR>
+autocmd FileType rust nmap <F4> :SlimeSend0 "cargo test --lib -- --nocapture\n"<CR>
+autocmd FileType rust nmap <F5> :SlimeSend0 "cargo test --lib -- --nocapture --test ".expand('%:t:r')."\n"<CR>
+autocmd FileType rust nmap <F6> :SlimeSend0 "cargo with rust-lldb --lib -- test --lib".expand('%:t:r')."\n"<CR>
+autocmd FileType rust nmap <F7> :SlimeSend0 "cargo with rust-gdbgui --lib -- test --lib".expand('%:t:r')."\n"<CR>
 autocmd FileType rust nmap <F10> :SlimeSend0 "cargo run\n"<CR>
 autocmd FileType rust nmap <Leader>b :SlimeSend0 "b ".expand('%:p').":".line(".")."\n"<CR>
 
 autocmd FileType mql4 nmap <F10> :SlimeSend0 "mqlcompile '".expand('%:p')."'\n"<CR>
+
+" This is needed to apply autocmd for loaded buffers.
+autocmd BufEnter * filetype detect
 
 function! IPythonEmmbedImport()
     let topline = line(1)
@@ -246,7 +254,7 @@ function! IPythonEmmbedImport()
 endfunction
 
 noremap <F3> :NERDTreeToggle<CR>
-noremap <C-e> :NERDTreeFind<CR>
+noremap <C-u> :NERDTreeFind<CR>
 let NERDTreeIgnore = ['\.\.$', '\.$', '\.pyc$', '\.sw.$']
 let NERDTreeShowHidden=1
 let NERDTreeShowBookmarks=1
@@ -264,6 +272,7 @@ let g:echodoc#enable_at_startup = 1
 " Completor
 let g:completor_python_binary = '/home/zenbook/.pyenv/versions/miniconda3-4.1.11/bin/python'
 let g:completor_racer_binary = '/home/zenbook/.cargo/bin/racer'
+let g:completor_complete_options = 'menuone,noselect'
 nnoremap <silent> <Leader>ss :call completor#do('signature')<CR>
 nnoremap <silent> <Leader>si :call completor#do('signature_insert')<CR>
 nnoremap <silent> <Leader>sa :call completor#do('signature_insert_with_attributes')<CR>
@@ -322,7 +331,7 @@ let g:vimade.detecttermcolors=0
 let g:vimade.fadelevel=0.5
 
 nnoremap <silent> <Leader>f :vertical resize 31<CR>
-nnoremap <F1> :UndotreeToggle<cr>
+nnoremap <F11> :UndotreeToggle<cr>
 
 if filereadable(expand("~/.vim/bundle/snake/plugin/snake.vim"))
     source /home/zenbook/.cache/dein/repos/github.com/amoffat/snake/plugin/snake.vim

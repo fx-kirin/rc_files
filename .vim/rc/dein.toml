@@ -89,6 +89,9 @@ repo = 'roxma/vim-hug-neovim-rpc'
 repo = 'Shougo/neomru.vim'
 
 [[plugins]]
+repo = 'Shougo/neoyank.vim'
+
+[[plugins]]
 repo = 'tpope/vim-fugitive' # show git status
 
 [[plugins]]

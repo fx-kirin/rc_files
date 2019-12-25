@@ -41,8 +41,9 @@ hook_source = '''
 repo = 'rust-lang/rust.vim'
 on_ft = 'rust'
 hook_source = '''
-    let g:rustfmt_autosave = 1
+    let g:rustfmt_autosave = 0
     let g:rust_doc#define_map_K = 0
+    autocmd FileType rust nnoremap <Leader>8 :RustFmt<CR>:w<CR>
 '''
 
 # refactoring tool
