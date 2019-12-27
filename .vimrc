@@ -207,7 +207,13 @@ endif
 " Tmux Slime Settings
 let g:slime_target = "tmux"
 let g:slime_python_ipython = 1
-let g:slime_default_config = {"socket_name": "default", "target_pane": "vim-output:1.1"}
+
+if  whoami =~ 'zenbook'
+    let g:slime_default_config = {"socket_name": "default", "target_pane": "vim-output:1.1"}
+else
+    let g:slime_default_config = {"socket_name": "default", "target_pane": ".2"}
+endif
+
 let g:slime_dont_ask_default = 1
 nmap <F1> :SlimeSend0 "\e[A\n"<CR>
 nmap <F2> <Plug>SlimeLineSendgj
@@ -215,10 +221,8 @@ nnoremap <silent> <F8> :SlimeSend0 "cd '".expand('%:p:h')."'\n"<CR>
 nnoremap <silent> <Leader><F8> :SlimeSend0 "cd ..\n"<CR>
 
 autocmd FileType python nmap <Leader><F2> :SlimeSend0 "from IPython import embed; embed(user_ns=locals(), using=False)\n"<CR>:call IPythonEmmbedImport()<CR>
-autocmd FileType python nmap <Leader><F3> :SlimeSend1 from reload_all import reload_all;reload_all(locals())<CR>
 autocmd FileType python nmap <Leader><F4> :call IPythonEmmbedImport()<CR>
 autocmd FileType python nmap <Leader><F5> :SlimeSend0 "from reload_all import reload_all; reload_all(locals())\n"<CR>
-autocmd FileType python nmap <Leader><F6> :SlimeSend0 "%run '".expand('%:p')."'\n"<CR>
 xmap <F2> <Plug>SlimeRegionSend
 autocmd FileType python nmap <F10> :SlimeSend0 "python '".expand('%:p')."'\n"<CR>
 autocmd FileType python nmap <Leader>b :SlimeSend0 "b ".expand('%:p').":".line(".")."\n"<CR>
@@ -226,12 +230,13 @@ autocmd FileType python nmap <F12> :SlimeSend0 "wine-python '".expand('%:p')."'\
 
 autocmd FileType rust nmap <F4> :SlimeSend0 "cargo test --lib -- --nocapture\n"<CR>
 autocmd FileType rust nmap <F5> :SlimeSend0 "cargo test --lib -- --nocapture --test ".expand('%:t:r')."\n"<CR>
-autocmd FileType rust nmap <F6> :SlimeSend0 "cargo with rust-lldb --lib -- test --lib".expand('%:t:r')."\n"<CR>
-autocmd FileType rust nmap <F7> :SlimeSend0 "cargo with rust-gdbgui --lib -- test --lib".expand('%:t:r')."\n"<CR>
 autocmd FileType rust nmap <F10> :SlimeSend0 "cargo run\n"<CR>
 autocmd FileType rust nmap <Leader>b :SlimeSend0 "b ".expand('%:p').":".line(".")."\n"<CR>
 
 autocmd FileType mql4 nmap <F10> :SlimeSend0 "mqlcompile '".expand('%:p')."'\n"<CR>
+
+nmap <F6> :let g:slime_default_config = {"socket_name": "default", "target_pane": ".2"}<CR>
+nmap <Leader><F6> :let g:slime_default_config = {"socket_name": "default", "target_pane": "vim-output:1.1"}<CR>
 
 " This is needed to apply autocmd for loaded buffers.
 autocmd BufEnter * filetype detect
@@ -270,8 +275,8 @@ let g:deoplete#sources#jedi#show_docstring = 0
 let g:echodoc#enable_at_startup = 1
 
 " Completor
-let g:completor_python_binary = '/home/zenbook/.pyenv/versions/miniconda3-4.1.11/bin/python'
-let g:completor_racer_binary = '/home/zenbook/.cargo/bin/racer'
+let g:completor_python_binary = $HOME.'/.pyenv/versions/miniconda3-4.1.11/bin/python'
+let g:completor_racer_binary = $HOME.'/.cargo/bin/racer'
 let g:completor_complete_options = 'menuone,noselect'
 nnoremap <silent> <Leader>ss :call completor#do('signature')<CR>
 nnoremap <silent> <Leader>si :call completor#do('signature_insert')<CR>

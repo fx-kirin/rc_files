@@ -1,3 +1,4 @@
+source ~/.zprofile
 bindkey -v # vim mode
 bindkey -M viins 'kj' vi-cmd-mode
 bindkey -r '^[' 
@@ -47,9 +48,11 @@ zstyle ':completion:*' menu select # Highlighting tab selection.
 autoload -Uz colors
 colors
 if [ $USER == "zenbook" ]; then
+    if [ -z $FROMBASH ]; then
+        test $(tmux list-panes | wc -l) -eq 1 && guake -r $(whoami);
+    fi
     precmd() { 
         print -rP "%{$fg[yellow]%}|%D %*|%{$fg_bold[green]%}%n%{${reset_color}%}:%{$fg_bold[blue]%~%{${reset_color}%}";
-        (if [ -z $FROMBASH ];then test $(tmux list-panes | wc -l) -eq 1 && guake -r $(whoami) & fi;)
     }
 else
     precmd() { 
@@ -139,9 +142,9 @@ export WELD_HOME=/home/zenbook/github/weld
 if [ $USER == "zenbook" ]; then
     alias gitpitch='docker run -it -v /home/zenbook/gitpitch_presentations:/repo -p 9000:9000 gitpitch/desktop:pro'
     alias newtab='guake -n NEW_TAB -e "cd \"$(readlink -f .)\""'
-    alias pwork='(guake -r Python > /dev/null 2>&1 &);cd $PYTHON_WORKSPACE && vim'
-    alias rwork='(guake -r Rust > /dev/null 2>&1 &);cd $RUST_WORKSPACE && vim'
-    alias ssh='(){if [ -z $FROMBASH ];then (test $(tmux list-panes | wc -l) -eq 1 && guake -r $1 &);fi; ssh $@} '
+    alias pwork='(guake -r "Python" > /dev/null 2>&1 &);cd $PYTHON_WORKSPACE && vim && guake -r $(whoami)'
+    alias rwork='(guake -r "Rust" > /dev/null 2>&1 &);cd $RUST_WORKSPACE && vim && guake -r $(whoami)'
+    alias ssh='(){if [ -z $FROMBASH ];then (test $(tmux list-panes | wc -l) -eq 1 && guake -r $1 &);fi; ssh $@ && guake -r $(whoami)}'
     compdef ssh='ssh'
     setopt complete_aliases
 fi
