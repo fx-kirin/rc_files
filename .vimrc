@@ -283,6 +283,18 @@ call deoplete#custom#option({
 \})
 let g:deoplete#sources#jedi#show_docstring = 0
 
+" Completor
+let g:completor_python_binary = $HOME.'/.pyenv/versions/miniconda3-4.1.11/bin/python'
+let g:completor_racer_binary = $HOME.'/.cargo/bin/racer'
+let g:completor_auto_trigger = 0
+" Disabling all file type
+let g:completor_whitelist = []
+nnoremap <silent> <Leader>ss :call completor#do('signature')<CR>
+nnoremap <silent> <Leader>si :call completor#do('signature_insert')<CR>
+nnoremap <silent> <Leader>sa :call completor#do('signature_insert_with_attributes')<CR>
+nnoremap <silent> <Leader>sj :call completor#do('definition')<CR>
+nnoremap <silent> <Leader>sd :call completor#do('doc')<CR>
+
 if executable('pyls')
     au User lsp_setup call lsp#register_server({
         \ 'name': 'pyls',

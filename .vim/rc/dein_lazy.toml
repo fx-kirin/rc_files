@@ -3,6 +3,15 @@ repo = 'Shougo/neco-vim'
 on_ft = ['vim']
 
 [[plugins]]
+repo = 'kyouryuukunn/completor-necovim'
+depends = ['neco-vim']
+on_ft = ['vim']
+
+[[plugins]]
+repo = 'tokorom/completor-shell'
+on_ft = ['sh']
+
+[[plugins]]
 repo = 'mattn/webapi-vim'
 on_cmd  = ['HatebloCreate']
 
