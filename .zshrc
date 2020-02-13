@@ -1,4 +1,3 @@
-source ~/.zprofile
 bindkey -v # vim mode
 bindkey -M viins 'kj' vi-cmd-mode
 bindkey -r '^[' 
@@ -12,12 +11,6 @@ autoload -Uz _zplugin
 (( ${+_comps} )) && _comps[zplugin]=_zplugin
 # End of Zplugin's installer chunk
 
-export ENHANCD_DISABLE_HOME=1
-export ENHANCD_HOME_ARG=,
-export ENHANCD_DOT_ARG=...
-export ENHANCD_HYPHEN_ARG=--
-export ENHANCD_FILTER=sk:fzf
-
 zplugin load momo-lab/zsh-abbrev-alias # 略語を展開する
 zplugin load zsh-users/zsh-completions # 補完
 zplugin load zsh-users/zsh-syntax-highlighting
@@ -27,7 +20,6 @@ zplugin load woefe/git-prompt.zsh
 zplugin load supercrabtree/k
 zplugin load caarlos0/zsh-mkc
 zplugin load docker/cli
-zplugin load b4b4r07/enhancd
 autoload -Uz vcs_info
 
 fpath=(/home/$USER/github/zsh-completions/src $fpath)
@@ -35,7 +27,7 @@ autoload -U compinit
 compinit
 
 alias ed='cd ,'
-alias ll='exa -hl --git --git-ignore'
+alias ll='exa -hla --git --git-ignore'
 alias la='ls -A'
 alias l='ls -CF'
 alias ls='exa '
@@ -61,6 +53,7 @@ else
 fi
 export PROMPT="$ "
 export RPROMPT='$(gitprompt)'
+export RIPGREP_CONFIG_PATH=$HOME/.config/ripgreprc
 
 autoload -U history-search-end
 zle -N history-beginning-search-backward-end history-search-end
@@ -116,6 +109,7 @@ alias gull='git pull origin master'
 alias gush='git push origin master'
 alias ra='ranger --choosedir=$HOME/rangerdir; LASTDIR=`cat $HOME/rangerdir`; cd "$LASTDIR"'
 alias ranger='ranger --choosedir=$HOME/rangerdir; LASTDIR=`cat $HOME/rangerdir`; cd "$LASTDIR"'
+alias jupyter-execute='jupyter nbconvert --ExecutePreprocessor.timeout=-1 --execute --clear-output'
 
 eval "$(dircolors -b ~/.dircolors)"
 
@@ -131,6 +125,8 @@ setopt auto_cd # ディレクトリ名だけで､ディレクトリの移動を
 find-grep () { find . -type f -print | xargs grep -n --binary-files=without-match $@ }
 setopt auto_list # 補完候補が複数ある時に、一覧表示
 
+export BAT_THEME="OneHalfDark"
+
 if [ ~/.zshrc -nt ~/.zshrc.zwc ]; then
    zcompile ~/.zshrc
 fi
@@ -140,7 +136,8 @@ export PATH="/home/"$USER"/.local/bin:$PATH:$HOME/.skim/bin"
 export WELD_HOME=/home/zenbook/github/weld
 
 if [ $USER == "zenbook" ]; then
-    alias gitpitch='docker run -it -v /home/zenbook/gitpitch_presentations:/repo -p 9000:9000 gitpitch/desktop:pro'
+    source ~/.zprofile
+    alias gitpitch='docker run -it --rm -v /home/zenbook/gitpitch_presentations:/repo -p 9000:9000 gitpitch/desktop:pro'
     alias newtab='guake -n NEW_TAB -e "cd \"$(readlink -f .)\""'
     alias pwork='(guake -r "Python" > /dev/null 2>&1 &);cd $PYTHON_WORKSPACE && vim && guake -r $(whoami)'
     alias rwork='(guake -r "Rust" > /dev/null 2>&1 &);cd $RUST_WORKSPACE && vim && guake -r $(whoami)'
@@ -153,3 +150,5 @@ fi
 [[ $- == *i* ]] && source "/home/zenbook/.skim/shell/completion.zsh" 2> /dev/null
 source "/home/$USER/.skim/shell/key-bindings.zsh"
 
+
+source /home/$USER/.config/broot/launcher/bash/br

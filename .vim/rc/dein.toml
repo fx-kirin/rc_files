@@ -140,10 +140,4 @@ repo = 'Shougo/echodoc.vim'
 repo = 'wellle/tmux-complete.vim'
 
 [[plugins]]
-repo = 'fx-kirin/completor.vim'
-
-[[plugins]]
-repo = 'ferreum/completor-tmux'
-
-[[plugins]]
 repo = 'mbbill/undotree'

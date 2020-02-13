@@ -184,7 +184,7 @@
 ## Use colors for displaying information about objects. Because this information
 #  is passed through a pager (like 'less'), and some pagers get confused with
 #  color codes, this capability can be turned off.
-#c.InteractiveShell.color_info = True
+c.InteractiveShell.color_info = True
 
 ## Set the color scheme (NoColor, Neutral, Linux, or LightBG).
 c.InteractiveShell.colors = 'Linux'
@@ -307,11 +307,11 @@ c.InteractiveShell.colors = 'Linux'
 #c.TerminalInteractiveShell.handle_return = None
 
 ## Highlight matching brackets.
-#c.TerminalInteractiveShell.highlight_matching_brackets = True
+c.TerminalInteractiveShell.highlight_matching_brackets = True
 
 ## The name or class of a Pygments style to use for syntax highlighting. To see
 #  available styles, run `pygmentize -L styles`.
-#c.TerminalInteractiveShell.highlighting_style = traitlets.Undefined
+c.TerminalInteractiveShell.highlighting_style = 'monokai'
 
 ## Override highlighting format for specific tokens
 #c.TerminalInteractiveShell.highlighting_style_overrides = {}

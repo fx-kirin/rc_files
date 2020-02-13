@@ -3,15 +3,6 @@ repo = 'Shougo/neco-vim'
 on_ft = ['vim']
 
 [[plugins]]
-repo = 'kyouryuukunn/completor-necovim'
-depends = ['neco-vim']
-on_ft = ['vim']
-
-[[plugins]]
-repo = 'tokorom/completor-shell'
-on_ft = ['sh']
-
-[[plugins]]
 repo = 'mattn/webapi-vim'
 on_cmd  = ['HatebloCreate']
 
@@ -50,6 +41,10 @@ hook_source = '''
 [[plugins]]
 on_ft = 'python'
 repo = 'fx-kirin/python-mode'
+
+[[plugins]]
+on_ft = 'python'
+repo = 'psf/black'
 
 [[plugins]]
 on_ft = 'python'

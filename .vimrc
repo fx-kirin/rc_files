@@ -1,6 +1,12 @@
 " Add path to read pyenv python.
 " https://lambdalisue.hatenablog.com/entry/2014/05/21/065845
 
+" To Fix an Error
+" E836: This Vim cannot execute :py3 after using :python
+" https://robertbasic.com/blog/force-python-version-in-vim/
+if has('python3')
+endif
+
 let g:username="fx-kirin"
 let g:email="fx.kirin@gmail.com"
 set nocompatible
@@ -209,7 +215,8 @@ let g:slime_target = "tmux"
 let g:slime_python_ipython = 1
 
 if  whoami =~ 'zenbook'
-    let g:slime_default_config = {"socket_name": "default", "target_pane": "vim-output:1.1"}
+    "let g:slime_default_config = {"socket_name": "default", "target_pane": "vim-output:1.1"}
+    let g:slime_default_config = {"socket_name": "default", "target_pane": ".2"}
 else
     let g:slime_default_config = {"socket_name": "default", "target_pane": ".2"}
 endif
@@ -235,8 +242,8 @@ autocmd FileType rust nmap <Leader>b :SlimeSend0 "b ".expand('%:p').":".line("."
 
 autocmd FileType mql4 nmap <F10> :SlimeSend0 "mqlcompile '".expand('%:p')."'\n"<CR>
 
-nmap <F6> :let g:slime_default_config = {"socket_name": "default", "target_pane": ".2"}<CR>
-nmap <Leader><F6> :let g:slime_default_config = {"socket_name": "default", "target_pane": "vim-output:1.1"}<CR>
+nmap <F6> :let b:slime_config = {"socket_name": "default", "target_pane": "vim-output:1.1"}<CR>:let g:slime_default_config = {"socket_name": "default", "target_pane": "vim-output:1.1"}<CR>
+nmap <Leader><F6> :let b:slime_config = {"socket_name": "default", "target_pane": ".2"}<CR>:let g:slime_default_config = {"socket_name": "default", "target_pane": ".2"}<CR>
 
 " This is needed to apply autocmd for loaded buffers.
 autocmd BufEnter * filetype detect
@@ -265,24 +272,16 @@ let NERDTreeShowHidden=1
 let NERDTreeShowBookmarks=1
 
 " deoplete
-set completeopt+=noinsert
 set completeopt-=preview
 let g:deoplete#sources#jedi#python_path = $HOME.'/.pyenv/versions/miniconda3-4.1.11/bin/python'
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#enable_ignore_case = 1
-let g:deoplete#enable_smart_case = 1
+call deoplete#custom#option({
+\ 'ignore_case': v:true,
+\ 'smart_case': v:true,
+\ 'on_insert_enter': v:false,
+\ 'camel_case': v:true,
+\})
 let g:deoplete#sources#jedi#show_docstring = 0
-let g:echodoc#enable_at_startup = 1
-
-" Completor
-let g:completor_python_binary = $HOME.'/.pyenv/versions/miniconda3-4.1.11/bin/python'
-let g:completor_racer_binary = $HOME.'/.cargo/bin/racer'
-let g:completor_complete_options = 'menuone,noselect'
-nnoremap <silent> <Leader>ss :call completor#do('signature')<CR>
-nnoremap <silent> <Leader>si :call completor#do('signature_insert')<CR>
-nnoremap <silent> <Leader>sa :call completor#do('signature_insert_with_attributes')<CR>
-nnoremap <silent> <Leader>sj :call completor#do('definition')<CR>
-nnoremap <silent> <Leader>sd :call completor#do('doc')<CR>
 
 if executable('pyls')
     au User lsp_setup call lsp#register_server({
@@ -296,9 +295,8 @@ endif
 let g:autopep8_ignore="E402,E265"
 let g:autopep8_max_line_length=255
 let g:autopep8_disable_show_diff=1
-let g:black_linelength=255
 
-autocmd FileType python nnoremap <Leader>8 :Autopep8<CR>:w<CR>
+autocmd FileType python nnoremap <Leader>8 :Black<CR>:Autopep8<CR>:w<CR>
 autocmd FileType python nnoremap <Leader>i :Isort<CR>:w<CR>
 
 let g:pymode_python = 'python3'
