@@ -1,3 +1,23 @@
+" PATHの自動更新関数
+" | 指定された path が $PATH に存在せず、ディレクトリとして存在している場合
+" | のみ $PATH に加える
+function! IncludePath(path)
+  " define delimiter depends on platform
+  if has('win16') || has('win32') || has('win64')
+    let delimiter = ";"
+  else
+    let delimiter = ":"
+  endif
+  let pathlist = split($PATH, delimiter)
+  if isdirectory(a:path) && index(pathlist, a:path) == -1
+    let $PATH=a:path.delimiter.$PATH
+  endif
+endfunction
+
+" ~/.pyenv/shims を $PATH に追加する
+" これを行わないとpythonが正しく検索されない
+call IncludePath(expand("~/.pyenv/shims"))
+
 " Add path to read pyenv python.
 " https://lambdalisue.hatenablog.com/entry/2014/05/21/065845
 
@@ -36,6 +56,7 @@ set hlsearch
 set autochdir
 set undodir=~/.vimundo
 set directory=~/.vimswap//
+set viminfo+=n~/.vim/viminfo
 set undofile
 set guitablabel=%t
 set cursorline
@@ -57,6 +78,14 @@ vnoremap k gk
 vnoremap <Down> gj
 vnoremap <Up>   gk
 
+" To select pasted text
+nnoremap gp `[v`]
+" Search selected text
+vnoremap ? y/\V<C-R>=escape(@",'/\')<CR><CR>
+
+vnoremap s :s/
+vnoremap a :S/
+
 " Search selected word in a visual mode
 vnoremap * y/\<\V<C-r>=escape(@",'/\')<CR>\><CR>
 
@@ -71,6 +100,11 @@ nmap sc <Plug>Csurround
 let g:ale_python_pyre_use_global=1
 let g:airline#extensions#ale#enabled = 1
 let g:ale_linters = {'rust': ['cargo', 'rustfmt', 'rls']}
+
+let g:vim_isort_python_version = 'python3'
+let g:vim_isort_map = ''
+
+let g:AutoPairsUseInsertedCount = 1
 
 " s - DeinVim Install
 if &compatible
@@ -105,6 +139,7 @@ endif
 
 let output1=system("find -L ".$HOME."/.cache/dein/repos/github.com/fx-kirin -printf '%T@\\n' | sort -r | head -n 1")[:-2]
 let output2=system("stat -L -c '%Y' ~/.vimrc")[:-2]
+let output3=system("find -L ".$HOME."/.vim/rc -printf '%T@\\n' | sort -r | head -n 1")[:-2]
 let modified_date_filename=$HOME."/.vimrc_last_modified_date"
 if filereadable(modified_date_filename)
     let lastdate=readfile(modified_date_filename)[0]
@@ -113,12 +148,20 @@ else
     let lastdate=0
 endif
 if output1 > output2
-    let modified_date=output1
+    if output3 > output1
+        let modified_date=output3
+    else
+        let modified_date=output1
+    endif
 else
-    let modified_date=output2
+    if output3 > output2
+        let modified_date=output3
+    else
+        let modified_date=output1
+    endif
 endif
 let whoami=system('whoami')
-if modified_date > lastdate && whoami =~ 'zenbook'
+if modified_date > lastdate && whoami != 'root'
     call dein#recache_runtimepath()
     call writefile([modified_date], modified_date_filename)
 endif
@@ -130,6 +173,9 @@ syntax enable
 let mapleader = "\<Space>"
 
 inoremap kj <ESC><C-l>
+" To prevent auto deleting indent
+nnoremap o o<Space><BS>
+nnoremap O O<Space><BS>
 nnoremap <silent> <C-Right> :if &ft != "nerdtree" \| :bn! \| endif<CR>
 nnoremap <silent> <C-Left> :if &ft != "nerdtree" \| :bp! \| endif<CR>
 nnoremap <silent> <C-Down> :bp\|bd #<CR>
@@ -156,6 +202,7 @@ nnoremap \h :vertical resize +5<CR>
 nnoremap \l :vertical resize -5<CR>
 nnoremap <silent><Leader>w :w<CR>
 nnoremap <silent><Leader>q :q<CR>
+nnoremap <Leader>/ /<C-r><C-w>/<CR>
 cmap w!! w !sudo tee % >/dev/null
 
 " Back to the beginning of selection
@@ -176,10 +223,21 @@ autocmd FileType yaml set softtabstop=2
 
 colorscheme monokai
 
+function! SlimeTarget()
+  if exists("b:slime_config")
+    let l:target = b:slime_config['target_pane']
+    return strlen(l:target) > 0 ? l:target : ''
+  endif
+  return ''
+endfunction
+
 let g:airline_theme             = 'monokai'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#show_tabs = 0
+let g:airline_section_z = "%p%% %#__accent_bold#%{g:airline_symbols.linenr}%l%#__restore__#%#__accent_bold#/%L%{g:airline_symbols.maxlinenr}%#__restore__#:%v %#__accent_bold#[%#__restore__#%{SlimeTarget()}%#__accent_bold#]%#__restore__#"
+
+
 
 let NERDTreeIgnore = ['\.\.$', '\.$', '\.pyc$', '\.sw.$']
 let NERDTreeShowHidden=1
@@ -215,8 +273,7 @@ let g:slime_target = "tmux"
 let g:slime_python_ipython = 1
 
 if  whoami =~ 'zenbook'
-    "let g:slime_default_config = {"socket_name": "default", "target_pane": "vim-output:1.1"}
-    let g:slime_default_config = {"socket_name": "default", "target_pane": ".2"}
+    let g:slime_default_config = {"socket_name": "default", "target_pane": "vim-output:.1"}
 else
     let g:slime_default_config = {"socket_name": "default", "target_pane": ".2"}
 endif
@@ -242,8 +299,8 @@ autocmd FileType rust nmap <Leader>b :SlimeSend0 "b ".expand('%:p').":".line("."
 
 autocmd FileType mql4 nmap <F10> :SlimeSend0 "mqlcompile '".expand('%:p')."'\n"<CR>
 
-nmap <F6> :let b:slime_config = {"socket_name": "default", "target_pane": "vim-output:1.1"}<CR>:let g:slime_default_config = {"socket_name": "default", "target_pane": "vim-output:1.1"}<CR>
-nmap <Leader><F6> :let b:slime_config = {"socket_name": "default", "target_pane": ".2"}<CR>:let g:slime_default_config = {"socket_name": "default", "target_pane": ".2"}<CR>
+nmap <F6> :let b:slime_config = {"socket_name": "default", "target_pane": ".2"}<CR>:let g:slime_default_config = {"socket_name": "default", "target_pane": ".2"}<CR>
+nmap <Leader><F6> :let b:slime_config = {"socket_name": "default", "target_pane": "vim-output:.1"}<CR>:let g:slime_default_config = {"socket_name": "default", "target_pane": "vim-output:.1"}<CR>
 
 " This is needed to apply autocmd for loaded buffers.
 autocmd BufEnter * filetype detect
@@ -273,7 +330,7 @@ let NERDTreeShowBookmarks=1
 
 " deoplete
 set completeopt-=preview
-let g:deoplete#sources#jedi#python_path = $HOME.'/.pyenv/versions/miniconda3-4.1.11/bin/python'
+let g:deoplete#sources#jedi#python_path = $HOME.'/.pyenv/versions/3.8.3/bin/python'
 let g:deoplete#enable_at_startup = 1
 call deoplete#custom#option({
 \ 'ignore_case': v:true,
@@ -284,11 +341,13 @@ call deoplete#custom#option({
 let g:deoplete#sources#jedi#show_docstring = 0
 
 " Completor
-let g:completor_python_binary = $HOME.'/.pyenv/versions/miniconda3-4.1.11/bin/python'
+let g:completor_python_binary = $HOME.'/.pyenv/versions/3.8.3/bin/python'
 let g:completor_racer_binary = $HOME.'/.cargo/bin/racer'
+let g:completor_complete_options = ''
 let g:completor_auto_trigger = 0
 " Disabling all file type
 let g:completor_whitelist = []
+let g:completor_complete_options = 'noselect'
 nnoremap <silent> <Leader>ss :call completor#do('signature')<CR>
 nnoremap <silent> <Leader>si :call completor#do('signature_insert')<CR>
 nnoremap <silent> <Leader>sa :call completor#do('signature_insert_with_attributes')<CR>
@@ -345,9 +404,17 @@ let g:vimade = {}
 let g:vimade.detecttermcolors=0
 let g:vimade.fadelevel=0.5
 
+" Markdown
+let g:mkdx#settings     = { 'highlight': { 'enable': 1 },
+                        \ 'enter': { 'shift': 1 },
+                        \ 'links': { 'external': { 'enable': 1 } },
+                        \ 'toc': { 'text': 'Table of Contents', 'update_on_write': 1 },
+                        \ 'fold': { 'enable': 1 },
+                        \ 'map': { 'prefix': 'm' } }
+
 nnoremap <silent> <Leader>f :vertical resize 31<CR>
 nnoremap <F11> :UndotreeToggle<cr>
 
 if filereadable(expand("~/.vim/bundle/snake/plugin/snake.vim"))
-    source /home/zenbook/.cache/dein/repos/github.com/amoffat/snake/plugin/snake.vim
+    source ~/.cache/dein/repos/github.com/amoffat/snake/plugin/snake.vim
 endif

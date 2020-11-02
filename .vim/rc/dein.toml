@@ -64,9 +64,6 @@ repo = 'tpope/vim-abolish'
 repo = 'w0rp/ale'
 
 [[plugins]]
-repo = 'moznion/hateblo.vim'
-
-[[plugins]]
 repo = 'amoffat/snake'
 
 [[plugins]]
@@ -143,7 +140,11 @@ repo = 'wellle/tmux-complete.vim'
 repo = 'fx-kirin/completor.vim'
 
 [[plugins]]
-repo = 'ferreum/completor-tmux'
+repo = 'mbbill/undotree'
 
 [[plugins]]
-repo = 'mbbill/undotree'
+repo = 'SidOfc/mkdx'
+
+[[plugins]]
+repo = 'sk1418/HowMuch'
+

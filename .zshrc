@@ -1,3 +1,6 @@
+source ~/.zprofile
+export ZPROFILE_LOADED=1
+
 bindkey -v # vim mode
 bindkey -M viins 'kj' vi-cmd-mode
 bindkey -r '^[' 
@@ -6,21 +9,33 @@ setopt +o nomatch
 bindkey '^[[Z' reverse-menu-complete
 
 ### Added by Zplugin's installer
-source "$HOME/.zplugin/bin/zplugin.zsh"
-autoload -Uz _zplugin
-(( ${+_comps} )) && _comps[zplugin]=_zplugin
-# End of Zplugin's installer chunk
+source "$HOME/.zinit/bin/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+# End of zinit's installer chunk
 
-zplugin load momo-lab/zsh-abbrev-alias # 略語を展開する
-zplugin load zsh-users/zsh-completions # 補完
-zplugin load zsh-users/zsh-syntax-highlighting
-zplugin load mollifier/cd-gitroot # git root
-zplugin load jimeh/zsh-peco-history
-zplugin load woefe/git-prompt.zsh
-zplugin load supercrabtree/k
-zplugin load caarlos0/zsh-mkc
-zplugin load docker/cli
+zinit load momo-lab/zsh-abbrev-alias # 略語を展開する
+zinit load zsh-users/zsh-completions # 補完
+zinit load zsh-users/zsh-syntax-highlighting
+zinit load mollifier/cd-gitroot # git root
+zinit load jimeh/zsh-peco-history
+zinit load woefe/git-prompt.zsh
+zinit load supercrabtree/k
+zinit load caarlos0/zsh-mkc
+zinit load docker/cli
+zinit load kutsan/zsh-system-clipboard
 autoload -Uz vcs_info
+
+export PROMPT="$ "
+export RPROMPT='$(gitprompt)'
+export RIPGREP_CONFIG_PATH=$HOME/.config/ripgreprc
+export ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[red]%}✖"
+export ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[green]%}● "
+export ZSH_THEME_GIT_PROMPT_UNSTAGED="%{$fg[red]%}✚ "
+export ZSH_THEME_GIT_PROMPT_UNTRACKED="… "
+export ZSH_THEME_GIT_PROMPT_STASHED="%{$fg[blue]%}⚑ "
+export ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔ "
+    
 
 fpath=(/home/$USER/github/zsh-completions/src $fpath)
 autoload -U compinit
@@ -34,6 +49,9 @@ alias ls='exa '
 alias grep='grep --color=auto -i'
 alias fgrep='fgrep --color=auto -i'
 alias egrep='egrep --color=auto -i'
+
+alias setclip="xclip -selection c"
+alias getclip="xclip -selection c -o"
 
 zstyle ':completion:*' menu select # Highlighting tab selection.
 
@@ -51,9 +69,6 @@ else
         print -rP "%{$fg[yellow]%}|%D %*|%{$fg_bold[green]%}%n%{${reset_color}%}:%{$fg_bold[blue]%~%{${reset_color}%}";
     }
 fi
-export PROMPT="$ "
-export RPROMPT='$(gitprompt)'
-export RIPGREP_CONFIG_PATH=$HOME/.config/ripgreprc
 
 autoload -U history-search-end
 zle -N history-beginning-search-backward-end history-search-end
@@ -86,8 +101,9 @@ bindkey "^[[1~" beginning-of-line
 bindkey "^[[4~" end-of-line
 bindkey "^[[3~" delete-char
 
-export WINEPREFIX=/home/$USER/.PlayOnLinux/wineprefix/metatrader4
-export MT4DIR=/home/$USER/.PlayOnLinux/wineprefix/metatrader4/drive_c/oanda
+# zsh-system-clipboard
+typeset -g ZSH_SYSTEM_CLIPBOARD_TMUX_SUPPORT='true'
+typeset -g ZSH_SYSTEM_CLIPBOARD_SELECTION='PRIMARY'
 
 alias rsync_diginnos_bitcoin='rsync -a -v --delete --exclude=*.o --exclude=*.so --exclude=*chrome* --exclude=*.log ~/workspace/bitcoin_trader diginnos:workspace/'
 alias wine='WINEPREFIX=/home/'$USER'/.PlayOnLinux/wineprefix/metatrader4 WINEARCH="win32" /home/'$USER'/.PlayOnLinux/wine/linux-x86/4.14/bin/wine'
@@ -110,8 +126,11 @@ alias gush='git push origin master'
 alias ra='ranger --choosedir=$HOME/rangerdir; LASTDIR=`cat $HOME/rangerdir`; cd "$LASTDIR"'
 alias ranger='ranger --choosedir=$HOME/rangerdir; LASTDIR=`cat $HOME/rangerdir`; cd "$LASTDIR"'
 alias jupyter-execute='jupyter nbconvert --ExecutePreprocessor.timeout=-1 --execute --clear-output'
+alias jupymux='tmux new -d -s jupyter jupyter notebook'
 
 eval "$(dircolors -b ~/.dircolors)"
+eval "$(zoxide init zsh)"
+eval "$(direnv hook zsh)"
 
 # http://yut.hatenablog.com/entry/20111125/1322177659
 setopt auto_param_keys # カッコの対応などを自動的に補完
@@ -131,12 +150,7 @@ if [ ~/.zshrc -nt ~/.zshrc.zwc ]; then
    zcompile ~/.zshrc
 fi
 
-# added by pipx (https://github.com/pipxproject/pipx)
-export PATH="/home/"$USER"/.local/bin:$PATH:$HOME/.skim/bin"
-export WELD_HOME=/home/zenbook/github/weld
-
 if [ $USER == "zenbook" ]; then
-    source ~/.zprofile
     alias gitpitch='docker run -it --rm -v /home/zenbook/gitpitch_presentations:/repo -p 9000:9000 gitpitch/desktop:pro'
     alias newtab='guake -n NEW_TAB -e "cd \"$(readlink -f .)\""'
     alias pwork='(guake -r "Python" > /dev/null 2>&1 &);cd $PYTHON_WORKSPACE && vim && guake -r $(whoami)'
@@ -152,3 +166,5 @@ source "/home/$USER/.skim/shell/key-bindings.zsh"
 
 
 source /home/$USER/.config/broot/launcher/bash/br
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
