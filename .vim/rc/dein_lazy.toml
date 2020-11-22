@@ -1,33 +1,6 @@
 [[plugins]]
-repo = 'Shougo/neco-vim'
-on_ft = ['vim']
-
-[[plugins]]
-repo = 'kyouryuukunn/completor-necovim'
-depends = ['neco-vim']
-on_ft = ['vim']
-
-[[plugins]]
-repo = 'tokorom/completor-shell'
-on_ft = ['sh']
-
-[[plugins]]
 repo = 'mattn/webapi-vim'
 on_cmd  = ['HatebloCreate']
-
-[[plugins]]
-repo = 'sebastianmarkow/deoplete-rust'
-on_ft = 'rust'
-depends = ['deoplete.nvim']
-hook_source = '''
-    let g:deoplete#sources#rust#racer_binary=systemlist('which racer')[0]
-    let g:deoplete#sources#rust#rust_source_path=systemlist('rustc --print sysroot')[0].'/lib/rustlib/src/rust/src'
-    let $RUST_SRC_PATH=systemlist('rustc --print sysroot')[0].'/lib/rustlib/src/rust/src'
-    let g:deoplete#sources#rust#show_duplicates=1
-    let g:deoplete#sources#rust#disable_keymap=1
-    nmap <buffer> gd <plug>DeopleteRustGoToDefinitionDefault
-    nmap <buffer> K  <plug>DeopleteRustShowDocumentation
-'''
 
 [[plugins]]
 repo = 'racer-rust/vim-racer'
@@ -58,10 +31,6 @@ repo = 'psf/black'
 [[plugins]]
 on_ft = 'python'
 repo = 'lambdalisue/vim-pyenv'
-
-[[plugins]]
-on_ft = 'python'
-repo = 'deoplete-plugins/deoplete-jedi'
 
 [[plugins]]
 on_ft = 'csv'

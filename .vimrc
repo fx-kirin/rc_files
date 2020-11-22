@@ -328,17 +328,6 @@ let NERDTreeIgnore = ['\.\.$', '\.$', '\.pyc$', '\.sw.$']
 let NERDTreeShowHidden=1
 let NERDTreeShowBookmarks=1
 
-" deoplete
-set completeopt-=preview
-let g:deoplete#sources#jedi#python_path = $HOME.'/.pyenv/versions/3.8.3/bin/python'
-let g:deoplete#enable_at_startup = 1
-call deoplete#custom#option({
-\ 'ignore_case': v:true,
-\ 'smart_case': v:true,
-\ 'on_insert_enter': v:false,
-\ 'camel_case': v:true,
-\})
-let g:deoplete#sources#jedi#show_docstring = 0
 
 " Completor
 let g:completor_python_binary = $HOME.'/.pyenv/versions/3.8.3/bin/python'

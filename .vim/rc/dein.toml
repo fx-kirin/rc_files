@@ -5,7 +5,11 @@ repo = 'Shougo/dein.vim'
 repo = 'SCROoloose/nerdtree'
 
 [[plugins]]
-repo = 'sickill/vim-monokai'
+repo = 'neoclide/coc.nvim'
+rev = 'release'
+
+[[plugins]]
+repo = 'crusoexia/vim-monokai'
 
 [[plugins]]
 repo = 'bling/vim-airline'
@@ -53,9 +57,6 @@ depends = ['xolox/vim-misc']
 
 [[plugins]]
 repo = 'xolox/vim-misc'
-
-[[plugins]]
-repo = 'yami-beta/asyncomplete-omni.vim'
 
 [[plugins]]
 repo = 'tpope/vim-abolish'
@@ -130,16 +131,10 @@ repo = 'fisadev/vim-isort'
 repo = 'roxma/vim-hug-neovim-rpc'
 
 [[plugins]]
-repo = 'Shougo/deoplete.nvim'
-
-[[plugins]]
 repo = 'Shougo/echodoc.vim'
 
 [[plugins]]
 repo = 'wellle/tmux-complete.vim'
-
-[[plugins]]
-repo = 'fx-kirin/completor.vim'
 
 [[plugins]]
 repo = 'mbbill/undotree'
@@ -154,11 +149,7 @@ repo = 'sk1418/HowMuch'
 repo = 'kurkale6ka/vim-swap'
 
 [[plugins]]
-repo = ' andymass/vim-matchup'
+repo = 'andymass/vim-matchup'
 
 [[plugins]]
 repo = 'machakann/vim-highlightedyank'
-
-#[[plugins]]
-#repo = 'neoclide/coc.nvim'
-#rev = 'release'
