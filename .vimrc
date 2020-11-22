@@ -96,11 +96,6 @@ nmap sc <Plug>Csurround
 
 " to make arrow key works correctly
 
-" ALE setting
-let g:ale_python_pyre_use_global=1
-let g:airline#extensions#ale#enabled = 1
-let g:ale_linters = {'rust': ['cargo', 'rustfmt', 'rls']}
-
 let g:vim_isort_python_version = 'python3'
 let g:vim_isort_map = ''
 
@@ -221,7 +216,7 @@ autocmd FileType yaml set shiftwidth=2
 autocmd FileType yaml set tabstop=2
 autocmd FileType yaml set softtabstop=2
 
-colorscheme monokai
+colorscheme monokai_pro
 
 function! SlimeTarget()
   if exists("b:slime_config")
@@ -231,7 +226,7 @@ function! SlimeTarget()
   return ''
 endfunction
 
-let g:airline_theme             = 'monokai'
+let g:airline_theme             = 'monokai_pro'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#show_tabs = 0

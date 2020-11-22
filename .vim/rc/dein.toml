@@ -9,7 +9,7 @@ repo = 'neoclide/coc.nvim'
 rev = 'release'
 
 [[plugins]]
-repo = 'crusoexia/vim-monokai'
+repo = 'phanviet/vim-monokai-pro'
 
 [[plugins]]
 repo = 'bling/vim-airline'
@@ -60,10 +60,6 @@ repo = 'xolox/vim-misc'
 
 [[plugins]]
 repo = 'tpope/vim-abolish'
-
-# Asynchronous linting/fixing for Vim
-[[plugins]]
-repo = 'w0rp/ale'
 
 [[plugins]]
 repo = 'amoffat/snake'
