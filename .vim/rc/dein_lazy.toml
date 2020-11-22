@@ -62,3 +62,7 @@ repo = 'lambdalisue/vim-pyenv'
 [[plugins]]
 on_ft = 'python'
 repo = 'deoplete-plugins/deoplete-jedi'
+
+[[plugins]]
+on_ft = 'csv'
+repo = 'chrisbra/csv.vim'

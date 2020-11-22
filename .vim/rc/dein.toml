@@ -20,7 +20,11 @@ repo = 'rcabralc/monokai-airline.vim'
 repo = 'yegappan/mru'
 
 [[plugins]]
+repo = 'SirVer/ultisnips'
+
+[[plugins]]
 repo = 'honza/vim-snippets'
+merged = 0
 
 [[plugins]]
 repo = 'vim-scripts/BufOnly.vim'
@@ -42,9 +46,6 @@ repo = 'fx-kirin/vim-slime'
 
 [[plugins]]
 repo = 'fx-kirin/vim-template'
-
-[[plugins]]
-repo = 'SirVer/ultisnips'
 
 [[plugins]]
 repo = 'fx-kirin/vim-session'
@@ -117,6 +118,7 @@ repo = 'frioux/vim-regedit'
 
 [[plugins]]
 repo = 'fx-kirin/kanisnippets'
+merged = 0
 
 [[plugins]]
 repo = 'tell-k/vim-autopep8'
@@ -148,3 +150,15 @@ repo = 'SidOfc/mkdx'
 [[plugins]]
 repo = 'sk1418/HowMuch'
 
+[[plugins]]
+repo = 'kurkale6ka/vim-swap'
+
+[[plugins]]
+repo = ' andymass/vim-matchup'
+
+[[plugins]]
+repo = 'machakann/vim-highlightedyank'
+
+#[[plugins]]
+#repo = 'neoclide/coc.nvim'
+#rev = 'release'

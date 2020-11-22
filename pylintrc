@@ -65,7 +65,8 @@ disable=
     format,
     too-many-ancestors,
     bare-except,
-    abstract-class-instantiated
+    abstract-class-instantiated,
+    unused-variable
 
 
 [REPORTS]

@@ -415,6 +415,10 @@ let g:mkdx#settings     = { 'highlight': { 'enable': 1 },
 nnoremap <silent> <Leader>f :vertical resize 31<CR>
 nnoremap <F11> :UndotreeToggle<cr>
 
+let g:csv_no_conceal = 1 " Avoiding unexpected padding of vim.csv.
+
+let g:UltiSnipsSnippetDirectories = ['UltiSnips']
+
 if filereadable(expand("~/.vim/bundle/snake/plugin/snake.vim"))
     source ~/.cache/dein/repos/github.com/amoffat/snake/plugin/snake.vim
 endif
