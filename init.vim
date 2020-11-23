@@ -57,7 +57,7 @@ set hlsearch
 set autochdir
 set undodir=~/.vimundo
 set directory=~/.vimswap//
-set viminfo+=n~/.vim/viminfo
+set viminfo+=n~/.nvim/viminfo
 set undofile
 set guitablabel=%t
 set cursorline
@@ -115,7 +115,7 @@ if dein#load_state('~/.cache/dein')
     call dein#add('~/.cache/dein/repos/github.com/Shougo/dein.vim')
     " プラグインリストを収めた TOML ファイル
     " 予め TOML ファイル（後述）を用意しておく
-    let g:rc_dir = expand('~/.vim/rc')
+    let g:rc_dir = expand('~/.nvim/rc')
     let s:toml = g:rc_dir . '/dein.toml'
     let s:lazy_toml = g:rc_dir . '/dein_lazy.toml'
 
@@ -134,9 +134,9 @@ if dein#check_install()
 endif
 
 let output1=system("find -L ".$HOME."/.cache/dein/repos/github.com/fx-kirin -printf '%T@\\n' | sort -r | head -n 1")[:-2]
-let output2=system("stat -L -c '%Y' ~/.vimrc")[:-2]
-let output3=system("find -L ".$HOME."/.vim/rc -printf '%T@\\n' | sort -r | head -n 1")[:-2]
-let modified_date_filename=$HOME."/.vimrc_last_modified_date"
+let output2=system("stat -L -c '%Y' ~/.config/nvim/init.vim")[:-2]
+let output3=system("find -L ".$HOME."/.nvim/rc -printf '%T@\\n' | sort -r | head -n 1")[:-2]
+let modified_date_filename=$HOME."/.nvim_init_last_modified_date"
 if filereadable(modified_date_filename)
     let lastdate=readfile(modified_date_filename)[0]
 
@@ -246,11 +246,11 @@ let NERDTreeIgnore = ['\.\.$', '\.$', '\.pyc$', '\.sw.$']
 let NERDTreeShowHidden=1
 let NERDTreeShowBookmarks=1
 
-let s:local_session_directory = xolox#misc#path#merge(getcwd(), '.vimsessions')
+let s:local_session_directory = xolox#misc#path#merge(getcwd(), '.nvimsessions')
 if isdirectory(s:local_session_directory)
   let g:session_directory = s:local_session_directory
 else
-  let g:session_directory = '~/.vimsessions'
+  let g:session_directory = '~/.nvimsessions'
 endif
 unlet s:local_session_directory
 
@@ -411,6 +411,6 @@ let g:csv_no_conceal = 1 " Avoiding unexpected padding of vim.csv.
 
 let g:UltiSnipsSnippetDirectories = ['UltiSnips']
 
-if filereadable(expand("~/.vim/bundle/snake/plugin/snake.vim"))
+if filereadable(expand("~/.nvim/bundle/snake/plugin/snake.vim"))
     source ~/.cache/dein/repos/github.com/amoffat/snake/plugin/snake.vim
 endif

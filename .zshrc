@@ -52,6 +52,8 @@ alias egrep='egrep --color=auto -i'
 
 alias setclip="xclip -selection c"
 alias getclip="xclip -selection c -o"
+alias vim="nvim"
+alias ovim="vim"
 
 zstyle ':completion:*' menu select # Highlighting tab selection.
 

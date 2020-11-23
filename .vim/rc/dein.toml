@@ -149,3 +149,6 @@ repo = 'andymass/vim-matchup'
 
 [[plugins]]
 repo = 'machakann/vim-highlightedyank'
+
+[[plugins]]
+repo = 'paulssonkalle/airline-monokai-pro'
