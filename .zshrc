@@ -53,7 +53,7 @@ alias egrep='egrep --color=auto -i'
 alias setclip="xclip -selection c"
 alias getclip="xclip -selection c -o"
 alias vim="nvim"
-alias ovim="vim"
+alias ovim="/usr/local/bin/vim"
 
 zstyle ':completion:*' menu select # Highlighting tab selection.
 
@@ -130,6 +130,9 @@ alias ranger='ranger --choosedir=$HOME/rangerdir; LASTDIR=`cat $HOME/rangerdir`;
 alias jupyter-execute='jupyter nbconvert --ExecutePreprocessor.timeout=-1 --execute --clear-output'
 alias jupymux='tmux new -d -s jupyter jupyter notebook'
 
+# Fixig pip bug
+export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
+
 eval "$(dircolors -b ~/.dircolors)"
 eval "$(zoxide init zsh)"
 eval "$(direnv hook zsh)"
@@ -157,8 +160,8 @@ if [ $USER == "zenbook" ]; then
     alias newtab='guake -n NEW_TAB -e "cd \"$(readlink -f .)\""'
     alias pwork='(guake -r "Python" > /dev/null 2>&1 &);cd $PYTHON_WORKSPACE && vim && guake -r $(whoami)'
     alias rwork='(guake -r "Rust" > /dev/null 2>&1 &);cd $RUST_WORKSPACE && vim && guake -r $(whoami)'
-    alias ssh='(){if [ -z $FROMBASH ];then (test $(tmux list-panes | wc -l) -eq 1 && guake -r $1 &);fi; ssh $@ && guake -r $(whoami)}'
-    compdef ssh='ssh'
+    # alias ssh='(){if [ -z $FROMBASH ];then (test $(tmux list-panes | wc -l) -eq 1 && guake -r $1 &);fi; ssh $@ && guake -r $(whoami)}'
+    # compdef ssh='ssh'
     setopt complete_aliases
 fi
 

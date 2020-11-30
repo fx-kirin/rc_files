@@ -18,12 +18,6 @@ repo = 'bling/vim-airline'
 repo = 'vim-airline/vim-airline-themes'
 
 [[plugins]]
-repo = 'rcabralc/monokai-airline.vim'
-
-[[plugins]]
-repo = 'yegappan/mru'
-
-[[plugins]]
 repo = 'SirVer/ultisnips'
 
 [[plugins]]
@@ -72,16 +66,15 @@ repo = 'wincent/terminus'
 
 [[plugins]]
 repo = 'Shougo/denite.nvim'
-rev = '2.0'
-
-[[plugins]]
-repo = 'roxma/nvim-yarp'
-
-[[plugins]]
-repo = 'roxma/vim-hug-neovim-rpc'
 
 [[plugins]]
 repo = 'Shougo/neomru.vim'
+
+[[plugins]]
+repo = 'nabezokodaikon/denite-converter-basename_to_top'
+
+[[plugins]]
+repo = 'hrsh7th/denite-converter-prioritize-basename'
 
 [[plugins]]
 repo = 'Shougo/neoyank.vim'
@@ -148,10 +141,32 @@ repo = 'kurkale6ka/vim-swap'
 repo = 'andymass/vim-matchup'
 
 [[plugins]]
-repo = 'machakann/vim-highlightedyank'
-
-[[plugins]]
 repo = 'paulssonkalle/airline-monokai-pro'
 
 [[plugins]]
 repo = 'fx-kirin/completor.vim'
+
+[[plugins]]
+repo = 'lotabout/skim'
+build = './install --all'
+merged = 0
+
+[[plugins]]
+repo = 'lotabout/skim.vim'
+depends = ['lotabout/skim']
+
+[[plugins]]
+repo = 'pbogut/fzf-mru.vim'
+depends = ['lotabout/skim']
+
+[[plugins]]
+repo = 'junegunn/fzf'
+build = '-> fzf#install()'
+merged = 0
+
+[[plugens]]
+repo = 'junegunn/fzf.vim'
+
+[[plugins]]
+repo = 'glacambre/firenvim'
+hook_post_update = "{ _ -> firenvim#install(0) }"
