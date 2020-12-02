@@ -3,6 +3,7 @@ export ZPROFILE_LOADED=1
 
 bindkey -v # vim mode
 bindkey -M viins 'kj' vi-cmd-mode
+bindkey -M viins 'k^M' accept-line # k+Enter Typo 対策
 bindkey -r '^[' 
 
 setopt +o nomatch
