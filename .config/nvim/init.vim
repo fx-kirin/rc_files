@@ -1,3 +1,30 @@
+" PATHの自動更新関数
+" | 指定された path が $PATH に存在せず、ディレクトリとして存在している場合
+" | のみ $PATH に加える
+function! IncludePath(path)
+  " define delimiter depends on platform
+  if has('win16') || has('win32') || has('win64')
+    let delimiter = ";"
+  else
+    let delimiter = ":"
+  endif
+  let pathlist = split($PATH, delimiter)
+  if isdirectory(a:path) && index(pathlist, a:path) == -1
+    let $PATH=a:path.delimiter.$PATH
+  endif
+endfunction
+
+" ~/.pyenv/shims を $PATH に追加する
+" これを行わないとpythonが正しく検索されない
+call IncludePath(expand("~/.pyenv/shims"))
+
+" To Fix an Error
+" E836: This Vim cannot execute :py3 after using :python
+" https://robertbasic.com/blog/force-python-version-in-vim/
+if has('python3')
+endif
+
+
 set undodir=~/.nvimundo
 set directory=~/.nvimswap//
 set viminfo+=n~/.nvim/viminfo

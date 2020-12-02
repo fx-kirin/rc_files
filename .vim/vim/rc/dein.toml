@@ -1,12 +1,18 @@
 [[plugins]]
 repo = 'Shougo/dein.vim'
+merged = 0
 
 [[plugins]]
 repo = 'SCROoloose/nerdtree'
 
 [[plugins]]
-repo = 'neoclide/coc.nvim'
-rev = 'release'
+repo = 'fx-kirin/nerdtree-yank-path'
+
+[[plugins]]
+repo = 'jistr/vim-nerdtree-tabs'
+
+[[plugins]]
+repo = 'Nopik/vim-nerdtree-direnter'
 
 [[plugins]]
 repo = 'phanviet/vim-monokai-pro'
@@ -19,6 +25,7 @@ repo = 'vim-airline/vim-airline-themes'
 
 [[plugins]]
 repo = 'SirVer/ultisnips'
+merged = 0
 
 [[plugins]]
 repo = 'honza/vim-snippets'
@@ -35,9 +42,6 @@ repo = 'tpope/vim-surround'
 
 [[plugins]]
 repo = 'tpope/vim-repeat'
-
-[[plugins]]
-repo = 'fx-kirin/nerdtree-yank-path'
 
 [[plugins]]
 repo = 'fx-kirin/vim-slime'
@@ -75,6 +79,9 @@ repo = 'nabezokodaikon/denite-converter-basename_to_top'
 
 [[plugins]]
 repo = 'hrsh7th/denite-converter-prioritize-basename'
+
+[[plugins]]
+repo = 'w1mvy/vim-denite-tab'
 
 [[plugins]]
 repo = 'Shougo/neoyank.vim'
@@ -120,9 +127,6 @@ repo = 'fisadev/vim-isort'
 repo = 'roxma/vim-hug-neovim-rpc'
 
 [[plugins]]
-repo = 'Shougo/echodoc.vim'
-
-[[plugins]]
 repo = 'wellle/tmux-complete.vim'
 
 [[plugins]]
@@ -161,12 +165,16 @@ depends = ['lotabout/skim']
 
 [[plugins]]
 repo = 'junegunn/fzf'
-build = '-> fzf#install()'
+build = './install --all'
 merged = 0
 
 [[plugens]]
 repo = 'junegunn/fzf.vim'
 
+# Asynchronous linting/fixing for Vim
 [[plugins]]
-repo = 'glacambre/firenvim'
-hook_post_update = "{ _ -> firenvim#install(0) }"
+repo = 'kevinclark/ale'
+rev = 'nvim-floating'
+
+[[plugins]]
+repo = 'ncm2/float-preview.nvim'

@@ -1,0 +1,3 @@
+# [[plugins]]
+# repo = 'glacambre/firenvim'
+# hook_post_update = "{ _ -> firenvim#install(0) }"
