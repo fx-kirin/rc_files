@@ -3,9 +3,7 @@ export ZPROFILE_LOADED=1
 
 bindkey -v # vim mode
 bindkey -M viins 'kj' vi-cmd-mode
-bindkey -M viins 'k^M' accept-line # k+Enter Typo 対策
 bindkey -r '^[' 
-
 setopt +o nomatch
 bindkey '^[[Z' reverse-menu-complete
 
@@ -15,6 +13,7 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 # End of zinit's installer chunk
 
+zinit light Aloxaf/fzf-tab # Tab の選択候補を fzf する
 zinit load momo-lab/zsh-abbrev-alias # 略語を展開する
 zinit load zsh-users/zsh-completions # 補完
 zinit load zsh-users/zsh-syntax-highlighting
@@ -161,8 +160,8 @@ if [ $USER == "zenbook" ]; then
     alias newtab='guake -n NEW_TAB -e "cd \"$(readlink -f .)\""'
     alias pwork='(guake -r "Python" > /dev/null 2>&1 &);cd $PYTHON_WORKSPACE && vim && guake -r $(whoami)'
     alias rwork='(guake -r "Rust" > /dev/null 2>&1 &);cd $RUST_WORKSPACE && vim && guake -r $(whoami)'
-    # alias ssh='(){if [ -z $FROMBASH ];then (test $(tmux list-panes | wc -l) -eq 1 && guake -r $1 &);fi; ssh $@ && guake -r $(whoami)}'
-    # compdef ssh='ssh'
+    alias ssh='(){if [ -z $FROMBASH ];then (test $(tmux list-panes | wc -l) -eq 1 && guake -r $1 &);fi; /usr/bin/ssh $@ && guake -r $(whoami)}'
+    compdef ssh='ssh'
     setopt complete_aliases
 fi
 
@@ -174,3 +173,4 @@ source "/home/$USER/.skim/shell/key-bindings.zsh"
 source /home/$USER/.config/broot/launcher/bash/br
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+source ~/.fzf/shell/completion.zsh

@@ -22,7 +22,8 @@ set number
 set backspace=indent,eol,start
 set ignorecase
 set smartcase
-set autochdir
+" To use fzf-projects
+"set autochdir
 set incsearch
 set hlsearch
 set undofile
@@ -31,6 +32,7 @@ set cursorline
 set hidden " Allows us to open a new buffer without saving
 set noshowmode " delete '— INSERT --' text 
 set history=10000
+set switchbuf=usetab 
 
 set foldmethod=indent  "折りたたみ範囲の判断基準（デフォルト: manual）
 set foldlevel=99        "ファイルを開いたときにデフォルトで折りたたむレベル
@@ -46,6 +48,9 @@ vnoremap k gk
 vnoremap <Down> gj
 vnoremap <Up>   gk
 imap <F1>  <NOP>
+
+" Avoiding mistype
+nnoremap q: :q
 
 " To select pasted text
 nnoremap gp `[v`]
@@ -196,6 +201,7 @@ endif
 " Tmux Slime Settings
 let g:slime_target = "tmux"
 let g:slime_python_ipython = 1
+nnoremap <silent> <Leader>- :!tmux split-window -v -p 30 -c '%:p:h' -d<CR>:let b:slime_config = {"socket_name": "default", "target_pane": ".2"}<CR>
 
 if  whoami =~ 'zenbook'
     let g:slime_default_config = {"socket_name": "default", "target_pane": "vim-output:.1"}
@@ -361,18 +367,23 @@ function! s:denite_filter_my_settings() abort
   inoremap <silent><buffer><expr> <CR> denite#do_map('do_action', 'open')
 endfunction
 
-
+nnoremap <C-d>f. :Files .
+nnoremap <silent> <Leader>t :Windows<CR>
+nnoremap <silent> <Leader>f :Files<CR>
+nnoremap <silent> <C-d>p :Files<CR>
 nnoremap <silent> <C-d>y :Denite history/yank<CR>
 nnoremap <silent> <C-d>b :Buffers<CR>
 nnoremap <silent> <C-d>r :Denite -buffer-name=register register<CR>
 nnoremap <silent> <C-d>m :FZFMru<CR>
-nnoremap <silent> <C-d>c :Files .<CR>
-nnoremap <silent> <C-d>p :Files ..<CR>
 nnoremap <silent> <C-d>l :Lines<CR>
-nnoremap <silent> <C-d>w :Windows<CR>
-nnoremap <silent> <C-d>pp :Files ../..<CR>
-nnoremap <silent> <C-d>fr :Files ~/rust_workspace
-nnoremap <silent> <C-d>fp :Files ~/workspace
+nnoremap <silent> <C-d>t :Windows<CR>
+nnoremap <silent> <C-d>h :Files ~<CR>
+nnoremap <silent> <C-d>c :Files .<CR>
+nnoremap <silent> <C-d>1 :Files .<CR>
+nnoremap <silent> <C-d>2 :Files ..<CR>
+nnoremap <silent> <C-d>3 :Files ../..<CR>
+nnoremap <silent> <C-d>4 :Files ../../..<CR>
+nnoremap <silent> <C-d>5 :Files ../../../..<CR>
 " call denite#custom#map('insert', '<C-N>', '<denite:move_to_next_line>', 'noremap')
 " call denite#custom#map('insert', '<C-P>', '<denite:move_to_previous_line>', 'noremap')
 " call denite#custom#map('normal', '<C-J>', '<denite:scroll_page_forwards>', 'noremap')
@@ -401,7 +412,7 @@ call denite#custom#source('file_mru,file/rec', 'converters', ['converter/priorit
 command! -bang -nargs=* Ag call fzf#vim#ag_interactive(<q-args>, fzf#vim#with_preview('right:50%:hidden', 'alt-h'))
 command! -bang -nargs=* Rg call fzf#vim#rg_interactive(<q-args>, fzf#vim#with_preview('right:50%:hidden', 'alt-h'))
 " let g:skim_layout = { 'window': 'enew' }
-" let g:fzf_layout = { 'window': 'enew' }
+let g:fzf_layout = { 'window': 'enew' }
 
 let g:skim_action = {'enter': 'tab split', 'ctrl-o': 'open'}
 let g:fzf_action = {'enter': 'tab split', 'ctrl-o': 'open'}
@@ -417,9 +428,10 @@ let g:mkdx#settings     = { 'highlight': { 'enable': 1 },
                         \ 'links': { 'external': { 'enable': 1 } },
                         \ 'toc': { 'text': 'Table of Contents', 'update_on_write': 1 },
                         \ 'fold': { 'enable': 1 },
-                        \ 'map': { 'prefix': 'm' } }
+                        \ 'map': { 'prefix': 'm' }, 
+                        \ 'table': { 'align': {"default": "left"}} }
 
-nnoremap <silent> <Leader>f :vertical resize 31<CR>
+nnoremap <silent> <Leader>r :vertical resize 31<CR>
 nnoremap <F11> :UndotreeToggle<cr>
 
 let g:csv_no_conceal = 1 " Avoiding unexpected padding of vim.csv.

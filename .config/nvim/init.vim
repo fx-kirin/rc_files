@@ -119,7 +119,7 @@ endfunction
 function! OnUIEnter(event) abort
   if s:IsFirenvimActive(a:event)
     set guifont=Cica:h14
-    nnoremap <silent> <Leader>f :call SetLinesForFirefox()<CR>
+    nnoremap <silent> <Leader>r :call SetLinesForFirefox()<CR>
     nnoremap <silent> <S-Esc> :w<CR>:call timer_start(500, function("TimerFucusPage"))<CR>
     nnoremap <silent> <C-Esc> :w<CR>:call timer_start(500, function("TimerFucusPageAndKill"))<CR>
     au BufEnter 192.168.100.114*ipynb*.txt set filetype=python

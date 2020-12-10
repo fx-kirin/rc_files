@@ -38,6 +38,7 @@ on_i = 1
 merged = 0
 hook_add = '''
 let g:deoplete#enable_at_startup = 1
+inoremap <silent><expr> <C-n>  pumvisible() ? "\<C-n>" : deoplete#manual_complete()
 '''
 hook_post_source = '''
 call deoplete#custom#option({
@@ -47,7 +48,6 @@ call deoplete#custom#option({
 \ 'camel_case': v:true,
 \ 'profile': v:true,
 \})
-inoremap <silent><expr> <C-n>  pumvisible() ? "\<C-n>" : deoplete#manual_complete()
 '''
 
 [[plugins]]

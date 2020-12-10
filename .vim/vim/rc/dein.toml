@@ -160,16 +160,19 @@ repo = 'lotabout/skim.vim'
 depends = ['lotabout/skim']
 
 [[plugins]]
-repo = 'pbogut/fzf-mru.vim'
-depends = ['lotabout/skim']
-
-[[plugins]]
 repo = 'junegunn/fzf'
 build = './install --all'
 merged = 0
 
-[[plugens]]
-repo = 'junegunn/fzf.vim'
+[[plugins]]
+repo = 'pbogut/fzf-mru.vim'
+depends = ['lotabout/skim']
+
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+
+[[plugins]]
+repo = 'benwainwright/fzf-project'
 
 # Asynchronous linting/fixing for Vim
 [[plugins]]
@@ -178,3 +181,6 @@ rev = 'nvim-floating'
 
 [[plugins]]
 repo = 'ncm2/float-preview.nvim'
+
+[[plugins]]
+repo = 'tommcdo/vim-exchange'
