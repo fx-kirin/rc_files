@@ -370,7 +370,8 @@ endfunction
 nnoremap <C-d>f. :Files .
 nnoremap <silent> <Leader>t :Windows<CR>
 nnoremap <silent> <Leader>f :Files<CR>
-nnoremap <silent> <C-d>p :Files<CR>
+nnoremap <silent> <C-d>wp :call skim#run({'source': 'fd -L .', 'sink': 'tab split', 'dir':'~/workspace'})<CR>
+nnoremap <silent> <C-d>wr :call skim#run({'source': 'fd -L .', 'sink': 'tab split', 'dir':'~/rust_workspace'})<CR>
 nnoremap <silent> <C-d>y :Denite history/yank<CR>
 nnoremap <silent> <C-d>b :Buffers<CR>
 nnoremap <silent> <C-d>r :Denite -buffer-name=register register<CR>
