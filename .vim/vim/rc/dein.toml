@@ -1,6 +1,5 @@
 [[plugins]]
-repo = 'Shougo/dein.vim'
-merged = 0
+repo = 'haya14busa/dein-command.vim'
 
 [[plugins]]
 repo = 'SCROoloose/nerdtree'
@@ -12,7 +11,7 @@ repo = 'fx-kirin/nerdtree-yank-path'
 repo = 'jistr/vim-nerdtree-tabs'
 
 [[plugins]]
-repo = 'Nopik/vim-nerdtree-direnter'
+repo = 'airblade/vim-rooter'
 
 [[plugins]]
 repo = 'phanviet/vim-monokai-pro'
@@ -102,9 +101,6 @@ repo = 'Xuyuanp/nerdtree-git-plugin'
 repo = 'vobornik/vim-mql4'
 
 [[plugins]]
-repo = 'haya14busa/dein-command.vim'
-
-[[plugins]]
 repo = 'tpope/vim-commentary'
 
 [[plugins]]
@@ -167,9 +163,6 @@ merged = 0
 [[plugins]]
 repo = 'pbogut/fzf-mru.vim'
 depends = ['lotabout/skim']
-
-[[plugins]]
-repo = 'tpope/vim-fugitive'
 
 [[plugins]]
 repo = 'benwainwright/fzf-project'

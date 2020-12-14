@@ -22,8 +22,11 @@ set number
 set backspace=indent,eol,start
 set ignorecase
 set smartcase
-" To use fzf-projects
+
+" To use vim-rooter
 "set autochdir
+let g:rooter_change_directory_for_non_project_files = 'current'
+
 set incsearch
 set hlsearch
 set undofile
@@ -310,8 +313,9 @@ let g:autopep8_ignore="E402,E265"
 let g:autopep8_max_line_length=255
 let g:autopep8_disable_show_diff=1
 
-autocmd FileType python nnoremap <Leader>o :Black<CR>:Autopep8<CR>:w<CR>
-autocmd FileType python nnoremap <Leader>i :Isort<CR>:w<CR>
+autocmd FileType python nnoremap <Leader>o :Black<CR>:Autopep8<CR>
+autocmd FileType python nnoremap <Leader>i :Isort<CR>
+let g:vim_isort_config_overrides = {'float_to_top': 1}
 
 let g:pymode_python = 'python3'
 let g:pymode_rope = 1 " enable rope
