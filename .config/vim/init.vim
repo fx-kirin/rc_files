@@ -173,7 +173,6 @@ let g:airline_section_z = "%p%% %#__accent_bold#%{g:airline_symbols.linenr}%l%#_
 let NERDTreeIgnore = ['\.\.$', '\.$', '\.pyc$', '\.sw.$']
 let NERDTreeShowHidden=1
 let NERDTreeShowBookmarks=1
-let NERDTreeMapOpenInTab='<ENTER>'
 let g:NERDTreeQuitOnOpen = 1
 
 let s:local_session_directory = xolox#misc#path#merge(getcwd(), '.nvimsessions')
