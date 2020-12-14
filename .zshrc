@@ -169,7 +169,7 @@ if [ $USER == "zenbook" ]; then
 fi
 
 
-[[ $- == *i* ]] && source "/home/zenbook/.skim/shell/completion.zsh" 2> /dev/null
+[[ $- == *i* ]] && source "/home/$USER/.skim/shell/completion.zsh" 2> /dev/null
 source "/home/$USER/.skim/shell/key-bindings.zsh"
 
 
