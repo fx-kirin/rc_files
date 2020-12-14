@@ -14,7 +14,6 @@ autoload -Uz _zinit
 # End of zinit's installer chunk
 
 zinit light Aloxaf/fzf-tab # Tab の選択候補を fzf する
-zinit load momo-lab/zsh-abbrev-alias # 略語を展開する
 zinit load zsh-users/zsh-completions # 補完
 zinit load zsh-users/zsh-syntax-highlighting
 zinit load mollifier/cd-gitroot # git root
@@ -169,7 +168,7 @@ if [ $USER == "zenbook" ]; then
 fi
 
 
-[[ $- == *i* ]] && source "/home/zenbook/.skim/shell/completion.zsh" 2> /dev/null
+[[ $- == *i* ]] && source "/home/$USER/.skim/shell/completion.zsh" 2> /dev/null
 source "/home/$USER/.skim/shell/key-bindings.zsh"
 
 
