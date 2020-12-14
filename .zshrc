@@ -27,7 +27,8 @@ zinit load kutsan/zsh-system-clipboard
 zinit load zsh-users/zsh-autosuggestions
 autoload -Uz vcs_info
 
-export PROMPT="$ "
+#export PROMPT="$ "
+export PROMPT="%(?.%(!.%F{white}❯%F{yellow}❯%F{red}.%F{green})$.%F{red}$)%f "
 export RPROMPT='$(gitprompt)'
 export RIPGREP_CONFIG_PATH=$HOME/.config/ripgreprc
 export ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[red]%}✖"
