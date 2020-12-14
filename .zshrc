@@ -37,7 +37,7 @@ export ZSH_THEME_GIT_PROMPT_UNTRACKED="… "
 export ZSH_THEME_GIT_PROMPT_STASHED="%{$fg[blue]%}⚑ "
 export ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔ "
     
-export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=239"
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=245"
 
 fpath=(/home/$USER/github/zsh-completions/src $fpath)
 autoload -U compinit
