@@ -24,6 +24,7 @@ zinit load supercrabtree/k
 zinit load caarlos0/zsh-mkc
 zinit load docker/cli
 zinit load kutsan/zsh-system-clipboard
+zinit load zsh-users/zsh-autosuggestions
 autoload -Uz vcs_info
 
 export PROMPT="$ "
@@ -36,6 +37,7 @@ export ZSH_THEME_GIT_PROMPT_UNTRACKED="… "
 export ZSH_THEME_GIT_PROMPT_STASHED="%{$fg[blue]%}⚑ "
 export ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔ "
     
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=239"
 
 fpath=(/home/$USER/github/zsh-completions/src $fpath)
 autoload -U compinit
