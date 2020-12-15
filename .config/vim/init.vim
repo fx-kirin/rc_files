@@ -291,7 +291,7 @@ set completeopt-=preview
 " ALE setting
 let g:ale_linters = {'rust': ['cargo', 'rustfmt', 'rls']}
 let g:ale_python_pyre_use_global=1
-let g:airline#extensions#ale#enabled = 0
+let g:airline#extensions#ale#enabled = 1
 let g:ale_floating_preview = 1
 let g:ale_hover_to_floating_preview = 1
 let g:ale_detail_to_floating_preview = 1
@@ -378,6 +378,7 @@ nnoremap <silent> <C-d>wr :call skim#run({'source': 'fd -L .', 'sink': 'tab spli
 nnoremap <silent> <C-d>y :Denite history/yank<CR>
 nnoremap <silent> <C-d>b :Buffers<CR>
 nnoremap <silent> <C-d>r :Denite -buffer-name=register register<CR>
+nnoremap <silent> <C-d>k :Marks<CR>
 nnoremap <silent> <C-d>m :FZFMru<CR>
 nnoremap <silent> <C-d>l :Lines<CR>
 nnoremap <silent> <C-d>t :Windows<CR>
@@ -441,6 +442,37 @@ nnoremap <F11> :UndotreeToggle<cr>
 let g:csv_no_conceal = 1 " Avoiding unexpected padding of vim.csv.
 
 let g:UltiSnipsSnippetDirectories = ['UltiSnips']
+
+" mark auto reg
+" http://saihoooooooo.hatenablog.com/entry/2013/04/30/001908
+if !exists('g:markrement_char')
+    let g:markrement_char = [
+    \     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+    \     'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
+    \ ]
+endif
+nnoremap <silent>m :<C-u>call <SID>AutoMarkrement()<CR>
+function! s:AutoMarkrement()
+    if !exists('b:markrement_pos')
+        let b:markrement_pos = 0
+    else
+        let b:markrement_pos = (b:markrement_pos + 1) % len(g:markrement_char)
+    endif
+    execute 'mark' g:markrement_char[b:markrement_pos]
+    echo 'marked' g:markrement_char[b:markrement_pos]
+endfunction
+
+nnoremap <leader>gs :tab sp<CR>:Gstatus<CR>:only<CR>
+nnoremap <leader>gw :Gwrite<CR>
+nnoremap <leader>gc :Gcommit<CR>
+nnoremap <leader>gb :Gblame<CR>
+nnoremap <leader>gl :Git log<CR>
+nnoremap <leader>gh :tab sp<CR>:0Glog<CR>
+" abbrev for `git history`: create new quickfix tab for history
+nnoremap <leader>gf :Gfetch<CR>
+nnoremap <leader>gd :Gvdiff<CR>
+nnoremap <leader>gg :Ggrep 
+
 
 if filereadable(expand("~/.nvim/bundle/snake/plugin/snake.vim"))
     source ~/.cache/dein/repos/github.com/amoffat/snake/plugin/snake.vim

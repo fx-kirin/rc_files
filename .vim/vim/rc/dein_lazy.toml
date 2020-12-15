@@ -54,7 +54,7 @@ call deoplete#custom#option({
 repo = 'sebastianmarkow/deoplete-rust'
 on_ft = 'rust'
 on_i = 1
-depends = ['deoplete.nvim']
+depends = ['deoplete.nvim', 'echodoc.vim']
 merged = 0
 hook_source = '''
     let g:deoplete#sources#rust#racer_binary=systemlist('which racer')[0]
@@ -71,13 +71,13 @@ repo = 'Shougo/neco-vim'
 merged = 0
 on_ft = ['vim']
 on_i = 1
-depends = ['deoplete.nvim']
+depends = ['deoplete.nvim', 'echodoc.vim']
 
 [[plugins]]
 repo = 'deoplete-plugins/deoplete-jedi'
 merged = 0
 on_ft = 'python'
-depends = ['deoplete.nvim']
+depends = ['deoplete.nvim', 'echodoc.vim']
 on_i = 1
 hook_add = '''
 let g:deoplete#sources#jedi#python_path = $HOME.'/.pyenv/versions/3.8.3/bin/python'
@@ -86,4 +86,11 @@ let g:deoplete#sources#jedi#show_docstring = 1
 
 [[plugins]]
 repo = 'Shougo/echodoc.vim'
+merged = 0
 depends = ['deoplete.nvim']
+on_i = 1
+hook_add = '''
+let g:echodoc#enable_at_startup=1
+let g:echodoc#type="floating"
+highlight link EchoDocFloat Pmenu
+'''
