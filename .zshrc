@@ -24,6 +24,7 @@ zinit load caarlos0/zsh-mkc
 zinit load docker/cli
 zinit load kutsan/zsh-system-clipboard
 zinit load zsh-users/zsh-autosuggestions
+zinit load MichaelAquilina/zsh-you-should-use
 autoload -Uz vcs_info
 
 #export PROMPT="$ "
@@ -36,7 +37,8 @@ export ZSH_THEME_GIT_PROMPT_UNSTAGED="%{$fg[red]%}✚ "
 export ZSH_THEME_GIT_PROMPT_UNTRACKED="… "
 export ZSH_THEME_GIT_PROMPT_STASHED="%{$fg[blue]%}⚑ "
 export ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[green]%}✔ "
-    
+
+bindkey '^J' autosuggest-execute
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=245"
 
 fpath=(/home/$USER/github/zsh-completions/src $fpath)

@@ -56,7 +56,7 @@ imap <F1>  <NOP>
 nnoremap q: :q
 
 " To select pasted text
-nnoremap gp `[v`]
+nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 " Search selected text
 vnoremap ? y/\V<C-R>=escape(@",'/\')<CR><CR>
 
