@@ -26,6 +26,7 @@ set smartcase
 " To use vim-rooter
 "set autochdir
 let g:rooter_change_directory_for_non_project_files = 'current'
+let g:rooter_silent_chdir = 1
 
 set incsearch
 set hlsearch
@@ -40,6 +41,7 @@ set switchbuf=usetab
 set foldmethod=indent  "折りたたみ範囲の判断基準（デフォルト: manual）
 set foldlevel=99        "ファイルを開いたときにデフォルトで折りたたむレベル
 
+imap kj <ESC>
 nnoremap <expr> j v:count ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj'
 nnoremap <expr> k v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk'
 nnoremap <Down> gj
@@ -83,15 +85,12 @@ let g:AutoPairsUseInsertedCount = 1
 
 let mapleader = "\<Space>"
 
-inoremap kj <ESC><C-l>
 " To prevent auto deleting indent
 nnoremap o o<Space><BS>
 nnoremap O O<Space><BS>
 nnoremap <silent> <C-Right> :tabn<CR>
 nnoremap <silent> <C-Left> :tabp<CR>
 nnoremap <silent> <C-Down> :tabc<CR>
-nnoremap <silent> <C-h> :tabmove -1<CR>
-nnoremap <silent> <C-l> :tabmove +1<CR>
 nnoremap <silent> <Leader>h :tabp<CR>
 nnoremap <silent> <Leader>l :tabn<CR>
 nnoremap <silent> <Leader>h :tabp<CR>
@@ -174,6 +173,7 @@ let NERDTreeIgnore = ['\.\.$', '\.$', '\.pyc$', '\.sw.$']
 let NERDTreeShowHidden=1
 let NERDTreeShowBookmarks=1
 let g:NERDTreeQuitOnOpen = 1
+let NERDTreeMapOpenInTab='<ENTER>'
 
 let s:local_session_directory = xolox#misc#path#merge(getcwd(), '.nvimsessions')
 if isdirectory(s:local_session_directory)
@@ -436,7 +436,7 @@ let g:mkdx#settings     = { 'highlight': { 'enable': 1 },
                         \ 'map': { 'prefix': 'm' }, 
                         \ 'table': { 'align': {"default": "left"}} }
 
-nnoremap <silent> <Leader>r :vertical resize 31<CR>
+nnoremap <silent> <Leader>v :vertical resize 31<CR>
 nnoremap <F11> :UndotreeToggle<cr>
 
 let g:csv_no_conceal = 1 " Avoiding unexpected padding of vim.csv.
@@ -473,6 +473,16 @@ nnoremap <leader>gf :Gfetch<CR>
 nnoremap <leader>gd :Gvdiff<CR>
 nnoremap <leader>gg :Ggrep 
 
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained",
+  highlight = {
+    enable = true,
+    disable = {
+    }
+  }
+}
+EOF
 
 if filereadable(expand("~/.nvim/bundle/snake/plugin/snake.vim"))
     source ~/.cache/dein/repos/github.com/amoffat/snake/plugin/snake.vim

@@ -11,6 +11,9 @@ repo = 'fx-kirin/nerdtree-yank-path'
 repo = 'jistr/vim-nerdtree-tabs'
 
 [[plugins]]
+repo = 'Nopik/vim-nerdtree-direnter'
+
+[[plugins]]
 repo = 'airblade/vim-rooter'
 
 [[plugins]]
@@ -177,3 +180,13 @@ repo = 'ncm2/float-preview.nvim'
 
 [[plugins]]
 repo = 'tommcdo/vim-exchange'
+
+[[plugins]]
+repo = 'nvim-treesitter/nvim-treesitter'
+merged = 0
+hook_post_update = '''
+lua require'nvim-treesitter.install'.commands.TSUpdate.run()'
+'''
+
+[[plugins]]
+repo = 'preservim/nerdcommenter'
