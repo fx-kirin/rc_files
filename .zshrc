@@ -23,8 +23,8 @@ zinit load supercrabtree/k
 zinit load caarlos0/zsh-mkc
 zinit load docker/cli
 zinit load kutsan/zsh-system-clipboard
-zinit load zsh-users/zsh-autosuggestions
 zinit load MichaelAquilina/zsh-you-should-use
+zinit load zsh-users/zsh-autosuggestions
 autoload -Uz vcs_info
 
 #export PROMPT="$ "
@@ -58,6 +58,8 @@ alias setclip="xclip -selection c"
 alias getclip="xclip -selection c -o"
 alias vim="nvim"
 alias ovim="/usr/local/bin/vim"
+
+alias toclip="xsel --clipboard --input"
 
 zstyle ':completion:*' menu select # Highlighting tab selection.
 
@@ -133,6 +135,8 @@ alias ra='ranger --choosedir=$HOME/rangerdir; LASTDIR=`cat $HOME/rangerdir`; cd 
 alias ranger='ranger --choosedir=$HOME/rangerdir; LASTDIR=`cat $HOME/rangerdir`; cd "$LASTDIR"'
 alias jupyter-execute='jupyter nbconvert --ExecutePreprocessor.timeout=-1 --execute --clear-output'
 alias jupymux='tmux new -d -s jupyter jupyter notebook'
+alias ..='cd ..' 
+alias pipreqs='pipreqs . --print | sed s/.egg==.*// | sed s/==.*// | uniq -u | sort > requirements.txt' 
 
 # Fixig pip bug
 export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring

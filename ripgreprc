@@ -7,3 +7,4 @@
 --colors=match:style:nobold
 --no-ignore
 --follow
+--type-add=ipynb:*.ipynb

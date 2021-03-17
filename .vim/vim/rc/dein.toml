@@ -148,6 +148,7 @@ repo = 'paulssonkalle/airline-monokai-pro'
 
 [[plugins]]
 repo = 'fx-kirin/completor.vim'
+merged = 0
 
 [[plugins]]
 repo = 'lotabout/skim'
@@ -172,8 +173,7 @@ repo = 'benwainwright/fzf-project'
 
 # Asynchronous linting/fixing for Vim
 [[plugins]]
-repo = 'kevinclark/ale'
-rev = 'nvim-floating'
+repo = 'dense-analysis/ale'
 
 [[plugins]]
 repo = 'ncm2/float-preview.nvim'
@@ -181,12 +181,12 @@ repo = 'ncm2/float-preview.nvim'
 [[plugins]]
 repo = 'tommcdo/vim-exchange'
 
-[[plugins]]
-repo = 'nvim-treesitter/nvim-treesitter'
-merged = 0
-hook_post_update = '''
-lua require'nvim-treesitter.install'.commands.TSUpdate.run()'
-'''
+#[[plugins]]
+#repo = 'nvim-treesitter/nvim-treesitter'
+#merged = 0
+#hook_post_update = '''
+#lua require'nvim-treesitter.install'.commands.TSUpdate.run()'
+#'''
 
 [[plugins]]
 repo = 'preservim/nerdcommenter'

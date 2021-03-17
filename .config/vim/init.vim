@@ -95,7 +95,7 @@ nnoremap <silent> <Leader>h :tabp<CR>
 nnoremap <silent> <Leader>l :tabn<CR>
 nnoremap <silent> <Leader>h :tabp<CR>
 nnoremap <silent> <Leader>d :tabc<CR>
-nnoremap <silent> <Leader>D :BufOnly<CR>
+nnoremap <silent> <Leader>D :BufOnly<CR>:tabonly<CR>
 nnoremap <silent> <Leader>j <C-w><C-w>
 nnoremap <silent> <Leader>k <C-w>W
 vnoremap <silent> <Leader>y "+y
@@ -301,6 +301,7 @@ let g:ale_hover_to_preview=1
 let g:ale_cursor_detail=1
 let g:ale_echo_cursor=0
 let g:ale_echo_delay=500
+highlight SpellCap guisp=Orange
 
 " Echodoc, the plugin to show function signatures.
 let g:echodoc#enable_at_startup=1
@@ -439,8 +440,6 @@ let g:mkdx#settings     = { 'highlight': { 'enable': 1 },
 nnoremap <silent> <Leader>v :vertical resize 31<CR>
 nnoremap <F11> :UndotreeToggle<cr>
 
-let g:csv_no_conceal = 1 " Avoiding unexpected padding of vim.csv.
-
 let g:UltiSnipsSnippetDirectories = ['UltiSnips']
 
 " mark auto reg
@@ -452,6 +451,7 @@ if !exists('g:markrement_char')
     \ ]
 endif
 nnoremap <silent>m :<C-u>call <SID>AutoMarkrement()<CR>
+autocmd InsertEnter * call <SID>AutoMarkrement()
 function! s:AutoMarkrement()
     if !exists('b:markrement_pos')
         let b:markrement_pos = 0
@@ -459,7 +459,6 @@ function! s:AutoMarkrement()
         let b:markrement_pos = (b:markrement_pos + 1) % len(g:markrement_char)
     endif
     execute 'mark' g:markrement_char[b:markrement_pos]
-    echo 'marked' g:markrement_char[b:markrement_pos]
 endfunction
 
 nnoremap <leader>gs :tab sp<CR>:Gstatus<CR>:only<CR>
@@ -473,16 +472,16 @@ nnoremap <leader>gf :Gfetch<CR>
 nnoremap <leader>gd :Gvdiff<CR>
 nnoremap <leader>gg :Ggrep 
 
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = "maintained",
-  highlight = {
-    enable = true,
-    disable = {
-    }
-  }
-}
-EOF
+"lua <<EOF
+"require'nvim-treesitter.configs'.setup {
+"  ensure_installed = "maintained",
+"  highlight = {
+"    enable = true,
+"    disable = {
+"    }
+"  }
+"}
+"EOF
 
 if filereadable(expand("~/.nvim/bundle/snake/plugin/snake.vim"))
     source ~/.cache/dein/repos/github.com/amoffat/snake/plugin/snake.vim

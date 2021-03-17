@@ -1,0 +1,10 @@
+#!/bin/bash
+base="`echo $NEMO_SCRIPT_CURRENT_URI | cut -d'/' -f3- | sed 's/%20/ /g' | nkf --url-input`"
+if [ -z "$NEMO_SCRIPT_SELECTED_FILE_PATHS" ]; then
+ dir="$base"
+else
+     while [ ! -z "$1" -a ! -d "$base/$1" ]; do shift; done
+     dir="$base/$1"
+fi
+#there should be an embracing around the $dir
+guake --show --execute-command="cd '$dir'" -n NEW_TAB

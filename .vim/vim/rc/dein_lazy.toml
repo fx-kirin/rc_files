@@ -48,6 +48,18 @@ call deoplete#custom#option({
 \ 'camel_case': v:true,
 \ 'profile': v:true,
 \})
+call deoplete#custom#var('around', {
+\   'range_above': 2000,
+\   'range_below': 2000,
+\   'mark_above': '[↑]',
+\   'mark_below': '[↓]',
+\   'mark_changes': '[*]',
+\})
+
+" Enable jedi source debug messages
+" call deoplete#custom#option('profile', v:true)
+" call deoplete#enable_logging('DEBUG', '/tmp/deoplete.log')
+" call deoplete#custom#source('jedi', 'is_debug_enabled', v:true)
 '''
 
 [[plugins]]
