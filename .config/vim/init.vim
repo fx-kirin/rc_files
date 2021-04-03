@@ -157,6 +157,7 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#show_tabs = 1
 let g:airline#extensions#tabline#show_tab_nr = 0
 let g:airline#extensions#tabline#show_tab_count = 0
+let g:airline_powerline_fonts = 1
 nmap <leader>1 <Plug>AirlineSelectTab1
 nmap <leader>2 <Plug>AirlineSelectTab2
 nmap <leader>3 <Plug>AirlineSelectTab3
@@ -313,7 +314,7 @@ let g:autopep8_ignore="E402,E265"
 let g:autopep8_max_line_length=255
 let g:autopep8_disable_show_diff=1
 
-autocmd FileType python nnoremap <Leader>o :Black<CR>:Autopep8<CR>
+autocmd FileType python nnoremap <Leader>o :let b:last_line = line(".")<CR>:Black<CR>:Autopep8<CR>:<C-r>=b:last_line<CR><CR>
 autocmd FileType python nnoremap <Leader>i :Isort<CR>
 let g:vim_isort_config_overrides = {'float_to_top': 1}
 

@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 source ~/.zprofile
 export ZPROFILE_LOADED=1
 
@@ -18,18 +25,19 @@ zinit load zsh-users/zsh-completions # 補完
 zinit load zsh-users/zsh-syntax-highlighting
 zinit load mollifier/cd-gitroot # git root
 zinit load jimeh/zsh-peco-history
-zinit load woefe/git-prompt.zsh
+#zinit load woefe/git-prompt.zsh
 zinit load supercrabtree/k
 zinit load caarlos0/zsh-mkc
 zinit load docker/cli
 zinit load kutsan/zsh-system-clipboard
 zinit load MichaelAquilina/zsh-you-should-use
 zinit load zsh-users/zsh-autosuggestions
+zinit ice depth=1; zinit light romkatv/powerlevel10k
 autoload -Uz vcs_info
 
 #export PROMPT="$ "
-export PROMPT="%(?.%(!.%F{white}❯%F{yellow}❯%F{red}.%F{green})$.%F{red}$)%f "
-export RPROMPT='$(gitprompt)'
+#export PROMPT="%(?.%(!.%F{white}❯%F{yellow}❯%F{red}.%F{green})$.%F{red}$)%f "
+#export RPROMPT='$(gitprompt)'
 export RIPGREP_CONFIG_PATH=$HOME/.config/ripgreprc
 export ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[red]%}✖"
 export ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[green]%}● "
@@ -69,13 +77,7 @@ if [ $USER == "zenbook" ]; then
     if [ -z $FROMBASH ]; then
         test $(tmux list-panes | wc -l) -eq 1 && guake -r $(whoami);
     fi
-    precmd() { 
-        print -rP "%{$fg[yellow]%}|%D %*|%{$fg_bold[green]%}%n%{${reset_color}%}:%{$fg_bold[blue]%~%{${reset_color}%}";
-    }
 else
-    precmd() { 
-        print -rP "%{$fg[yellow]%}|%D %*|%{$fg_bold[green]%}%n%{${reset_color}%}:%{$fg_bold[blue]%~%{${reset_color}%}";
-    }
 fi
 
 autoload -U history-search-end
@@ -182,3 +184,6 @@ source /home/$USER/.config/broot/launcher/bash/br
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 source ~/.fzf/shell/completion.zsh
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
