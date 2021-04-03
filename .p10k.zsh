@@ -334,7 +334,7 @@
   typeset -g POWERLEVEL9K_DIR_CLASSES=()
 
   # Custom prefix.
-  typeset -g POWERLEVEL9K_DIR_PREFIX='%n:'
+  typeset -g POWERLEVEL9K_DIR_PREFIX='%B%F{green}%n%b%F{white}:'
 
   #####################################[ vcs: git status ]######################################
   # Branch icon. Set this parameter to '\uF126 ' for the popular Powerline branch icon.
@@ -1505,7 +1505,7 @@
 
   ####################################[ time: current time ]####################################
   # Current time color.
-  typeset -g POWERLEVEL9K_TIME_FOREGROUND=178
+  typeset -g POWERLEVEL9K_TIME_FOREGROUND=3
   # Format for the current time: 09:51:02. See `man 3 strftime`.
   typeset -g POWERLEVEL9K_TIME_FORMAT='%D{%H:%M:%S}'
   # If set to true, time will update when you hit enter. This way prompts for the past
