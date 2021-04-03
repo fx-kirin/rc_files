@@ -175,7 +175,6 @@ if [ $USER == "zenbook" ]; then
     setopt complete_aliases
 fi
 
-
 [[ $- == *i* ]] && source "/home/$USER/.skim/shell/completion.zsh" 2> /dev/null
 source "/home/$USER/.skim/shell/key-bindings.zsh"
 
