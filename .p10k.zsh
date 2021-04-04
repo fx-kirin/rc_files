@@ -159,7 +159,11 @@
   fi
 
   # Default background color.
-  typeset -g POWERLEVEL9K_BACKGROUND=234
+  if [[ $USER == 'zenbook' ]]; then
+      typeset -g POWERLEVEL9K_BACKGROUND=234
+  else
+      typeset -g POWERLEVEL9K_BACKGROUND=97
+  fi
 
   # Separator between same-color segments on the left.
   typeset -g POWERLEVEL9K_LEFT_SUBSEGMENT_SEPARATOR='%242F\uE0B1'
