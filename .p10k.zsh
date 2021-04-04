@@ -162,7 +162,7 @@
   if [[ $USER == 'zenbook' ]]; then
       typeset -g POWERLEVEL9K_BACKGROUND=234
   else
-      typeset -g POWERLEVEL9K_BACKGROUND=97
+      typeset -g POWERLEVEL9K_BACKGROUND=238
   fi
 
   # Separator between same-color segments on the left.
