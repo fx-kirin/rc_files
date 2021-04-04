@@ -190,3 +190,6 @@ repo = 'tommcdo/vim-exchange'
 
 [[plugins]]
 repo = 'preservim/nerdcommenter'
+
+[[plugins]]
+repo = 'thinca/vim-zenspace'

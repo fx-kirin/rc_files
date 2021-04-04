@@ -22,6 +22,8 @@ set number
 set backspace=indent,eol,start
 set ignorecase
 set smartcase
+set list  " 不可視文字を表示する
+set listchars=tab:>-,trail:-  " タブを >--- 半スペを . で表示する
 
 " To use vim-rooter
 "set autochdir
