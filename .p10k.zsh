@@ -159,7 +159,7 @@
   fi
 
   # Default background color.
-  if [[ $USER == 'zenbook' ]]; then
+  if [[ $SSH_CONNECTION == '' ]]; then
       typeset -g POWERLEVEL9K_BACKGROUND=234
   else
       typeset -g POWERLEVEL9K_BACKGROUND=238
