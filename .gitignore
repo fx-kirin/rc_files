@@ -16,3 +16,4 @@
 
 *.sqlite
 
+.nvimsessions/default.vim

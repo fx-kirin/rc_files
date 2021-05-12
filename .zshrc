@@ -179,8 +179,6 @@ fi
 source "/home/$USER/.skim/shell/key-bindings.zsh"
 
 
-source /home/$USER/.config/broot/launcher/bash/br
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 source ~/.fzf/shell/completion.zsh
 

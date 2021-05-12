@@ -302,8 +302,9 @@ let g:ale_set_loclist = 0
 let g:ale_set_quickfix = 1
 let g:ale_hover_to_preview=1
 let g:ale_cursor_detail=1
-let g:ale_echo_cursor=0
-let g:ale_echo_delay=500
+let g:ale_echo_cursor=1
+let g:ale_echo_delay=2000
+let g:ale_lint_delay=2000
 highlight SpellCap guisp=Orange
 
 " Echodoc, the plugin to show function signatures.
