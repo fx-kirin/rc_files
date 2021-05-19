@@ -170,7 +170,7 @@ if [ $USER == "zenbook" ]; then
     alias newtab='guake -n NEW_TAB -e "cd \"$(readlink -f .)\""'
     alias pwork='(guake -r "Python" > /dev/null 2>&1 &);cd $PYTHON_WORKSPACE && vim && guake -r $(whoami)'
     alias rwork='(guake -r "Rust" > /dev/null 2>&1 &);cd $RUST_WORKSPACE && vim && guake -r $(whoami)'
-    alias ssh='(){if [ -z $FROMBASH ];then (test $(tmux list-panes | wc -l) -eq 1 && guake -r $1 &);fi; /usr/bin/ssh $@ && guake -r $(whoami)}'
+    alias ssh='(){if [ -z $FROMBASH ];then (test $(tmux list-panes | wc -l) -eq 1 && guake -r $1 &);fi; /usr/bin/ssh $@ ; guake -r $(whoami)}'
     compdef ssh='ssh'
     setopt complete_aliases
 fi
