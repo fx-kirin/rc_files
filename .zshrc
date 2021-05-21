@@ -71,7 +71,7 @@ alias svim='(){vim suda://$@}'
 function sudo() {
   case $* in
     vim* )  command nvim suda://"${@:2}";;
-    * ) command sudo "$*" ;;
+    * ) command sudo $@ ;;
   esac
 }
 
