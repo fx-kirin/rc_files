@@ -195,4 +195,4 @@ repo = 'preservim/nerdcommenter'
 repo = 'thinca/vim-zenspace'
 
 [[plugins]]
-repo = 'vim-scripts/sudo.vim'
+repo = 'lambdalisue/suda.vim'
