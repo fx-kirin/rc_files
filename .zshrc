@@ -66,6 +66,14 @@ alias setclip="xclip -selection c"
 alias getclip="xclip -selection c -o"
 alias vim="nvim"
 alias ovim="/usr/local/bin/vim"
+alias svim='(){vim sudo:$@}'
+
+function sudo() {
+  case $* in
+    vim* )  command nvim sudo:"${@:2}";;
+    * ) command sudo "$*" ;;
+  esac
+}
 
 alias toclip="xsel --clipboard --input"
 
