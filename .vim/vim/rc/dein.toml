@@ -181,13 +181,6 @@ repo = 'ncm2/float-preview.nvim'
 [[plugins]]
 repo = 'tommcdo/vim-exchange'
 
-#[[plugins]]
-#repo = 'nvim-treesitter/nvim-treesitter'
-#merged = 0
-#hook_post_update = '''
-#lua require'nvim-treesitter.install'.commands.TSUpdate.run()'
-#'''
-
 [[plugins]]
 repo = 'preservim/nerdcommenter'
 
@@ -196,3 +189,6 @@ repo = 'thinca/vim-zenspace'
 
 [[plugins]]
 repo = 'lambdalisue/suda.vim'
+
+[[plugins]]
+repo = 'gcmt/taboo.vim'

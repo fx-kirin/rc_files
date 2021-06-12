@@ -67,6 +67,7 @@ alias getclip="xclip -selection c -o"
 alias vim="nvim"
 alias ovim="/usr/local/bin/vim"
 alias svim='(){vim suda://$@}'
+alias zim='zi && vim'
 
 function sudo() {
   case $* in
@@ -82,8 +83,8 @@ zstyle ':completion:*' menu select # Highlighting tab selection.
 autoload -Uz colors
 colors
 if [ $USER == "zenbook" ]; then
-    if [ -z $FROMBASH ]; then
-        test $(tmux list-panes | wc -l) -eq 1 && guake -r $(whoami);
+    if [ -n "$GUAKE_TAB_UUID" ]; then
+        test $(tmux list-panes | wc -l) -eq 1 && easynohup guake -i $GUAKE_TAB_UUID --rename-tab=$(whoami);
     fi
 else
 fi
@@ -175,10 +176,10 @@ fi
 
 if [ $USER == "zenbook" ]; then
     alias gitpitch='docker run -it --rm -v /home/zenbook/gitpitch_presentations:/repo -p 9000:9000 gitpitch/desktop:pro'
-    alias newtab='guake -n NEW_TAB -e "cd \"$(readlink -f .)\""'
-    alias pwork='(guake -r "Python" > /dev/null 2>&1 &);cd $PYTHON_WORKSPACE && vim && guake -r $(whoami)'
-    alias rwork='(guake -r "Rust" > /dev/null 2>&1 &);cd $RUST_WORKSPACE && vim && guake -r $(whoami)'
-    alias ssh='(){if [ -z $FROMBASH ];then (test $(tmux list-panes | wc -l) -eq 1 && guake -r $1 &);fi; /usr/bin/ssh $@ ; guake -r $(whoami)}'
+    alias newtab='easynohup guake -n NEW_TAB -e "cd \"$(readlink -f .)\""'
+    alias pwork='(easynohup guake -i $GUAKE_TAB_UUID --rename-tab="Python" > /dev/null 2>&1 &);cd $PYTHON_WORKSPACE && vim ; easynohup guake -i $GUAKE_TAB_UUID --rename-tab=$(whoami)'
+    alias rwork='(easynohup guake -i $GUAKE_TAB_UUID --rename-tab="Rust" > /dev/null 2>&1 &);cd $RUST_WORKSPACE && vim ; easynohup guake -i $GUAKE_TAB_UUID --rename-tab=$(whoami)'
+    alias ssh='(){if [ -z $FROMBASH ];then (test $(tmux list-panes | wc -l) -eq 1 && easynohup guake -i $GUAKE_TAB_UUID --rename-tab=$1 &);fi; (trap "easynohup guake -i $GUAKE_TAB_UUID --rename-tab=$(whoami)" INT;/usr/bin/ssh $@) ; easynohup guake -i $GUAKE_TAB_UUID --rename-tab=$(whoami)}'
     compdef ssh='ssh'
     setopt complete_aliases
 fi

@@ -17,7 +17,6 @@ set shiftwidth=4
 set tabstop=4
 set softtabstop=4
 set wrap
-set relativenumber
 set number
 set backspace=indent,eol,start
 set ignorecase
@@ -26,9 +25,12 @@ set list  " 不可視文字を表示する
 set listchars=tab:>-,trail:-  " タブを >--- 半スペを . で表示する
 
 " To use vim-rooter
-"set autochdir
-let g:rooter_change_directory_for_non_project_files = 'current'
 let g:rooter_silent_chdir = 1
+let g:rooter_change_directory_for_non_project_files = ''
+let g:rooter_patterns = [
+    \'.git', '_darcs', '.hg', '.bzr', '.svn',
+    \'Makefile', '.nvimsessions', 'src', '.vimsessions'
+\]
 
 set incsearch
 set hlsearch
@@ -93,9 +95,14 @@ nnoremap O O<Space><BS>
 nnoremap <silent> <C-Right> :tabn<CR>
 nnoremap <silent> <C-Left> :tabp<CR>
 nnoremap <silent> <C-Down> :tabc<CR>
-nnoremap <silent> <Leader>h :tabp<CR>
 nnoremap <silent> <Leader>l :tabn<CR>
 nnoremap <silent> <Leader>h :tabp<CR>
+nnoremap <silent> <Leader>L :tabm +1<CR>
+nnoremap <silent> <Leader>H :tabm -1<CR>
+vnoremap <silent> <Leader>l :<C-u>tabn<CR>
+vnoremap <silent> <Leader>h :<C-u>tabp<CR>
+vnoremap <silent> <Leader>L :<C-u>tabm +1<CR>
+vnoremap <silent> <Leader>H :<C-u>tabm -1<CR>
 nnoremap <silent> <Leader>d :tabc<CR>
 nnoremap <silent> <Leader>D :BufOnly<CR>:tabonly<CR>
 nnoremap <silent> <Leader>j <C-w><C-w>
@@ -155,7 +162,6 @@ endfunction
 
 let g:airline_theme             = 'monokai_pro'
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#show_tabs = 1
 let g:airline#extensions#tabline#show_tab_nr = 0
 let g:airline#extensions#tabline#show_tab_count = 0
@@ -171,6 +177,7 @@ nmap <leader>8 <Plug>AirlineSelectTab8
 nmap <leader>9 <Plug>AirlineSelectTab9
 
 let g:airline_section_z = "%p%% %#__accent_bold#%{g:airline_symbols.linenr}%l%#__restore__#%#__accent_bold#/%L%{g:airline_symbols.maxlinenr}%#__restore__#:%v %#__accent_bold#[%#__restore__#%{SlimeTarget()}%#__accent_bold#]%#__restore__#"
+let g:airline_section_c = "%<%<%{expand('%:p')} %#__accent_red#%{airline#util#wrap(airline#parts#readonly(),0)}%#__restore__#%#__accent_bold#"
 
 let NERDTreeIgnore = ['\.\.$', '\.$', '\.pyc$', '\.sw.$']
 let NERDTreeShowHidden=1
@@ -179,11 +186,18 @@ let g:NERDTreeQuitOnOpen = 1
 let NERDTreeMapOpenInTab='<ENTER>'
 
 let s:local_session_directory = xolox#misc#path#merge(getcwd(), '.nvimsessions')
-if isdirectory(s:local_session_directory)
+if isdirectory(s:local_session_directory) && len(v:argv) <= 1 && getcwd() != $HOME
   let g:session_directory = s:local_session_directory
+  silent exec "!easynohup guake -i " $GUAKE_TAB_UUID " --rename-tab \"vim "expand('%:p:h:t')"\""
 else
   let g:session_directory = '~/.nvimsessions'
+  if len(v:argv) <= 1
+    silent exec "!easynohup guake -i " $GUAKE_TAB_UUID " --rename-tab \"vim "join(v:argv[1:], " ")"\""
+  else
+    silent exec "!easynohup guake -i " $GUAKE_TAB_UUID " --rename-tab \"vim "expand('%:t')"\""
+  endif
 endif
+autocmd VimLeave * silent exec "!easynohup guake -i " $GUAKE_TAB_UUID " --rename-tab " whoami
 unlet s:local_session_directory
 
 set sessionoptions-=help
@@ -475,6 +489,8 @@ nnoremap <leader>gh :tab sp<CR>:0Glog<CR>
 nnoremap <leader>gf :Gfetch<CR>
 nnoremap <leader>gd :Gvdiff<CR>
 nnoremap <leader>gg :Ggrep 
+
+let g:taboo_tab_format="%r%m"
 
 "lua <<EOF
 "require'nvim-treesitter.configs'.setup {
