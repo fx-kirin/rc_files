@@ -319,6 +319,7 @@ let g:ale_cursor_detail=1
 let g:ale_echo_cursor=1
 let g:ale_echo_delay=2000
 let g:ale_lint_delay=2000
+let g:ale_close_preview_on_insert=1
 highlight SpellCap guisp=Orange
 
 " Echodoc, the plugin to show function signatures.
