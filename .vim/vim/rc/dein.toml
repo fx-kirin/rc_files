@@ -192,3 +192,6 @@ repo = 'lambdalisue/suda.vim'
 
 [[plugins]]
 repo = 'gcmt/taboo.vim'
+
+[[plugins]]
+repo = 'mfussenegger/nvim-dap'
