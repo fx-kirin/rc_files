@@ -7,11 +7,6 @@ hook_source = '''
     autocmd FileType rust nnoremap <Leader>o :RustFmt<CR>:w<CR>
 '''
 
-# refactoring tool
-[[plugins]]
-on_ft = 'python'
-repo = 'python-mode/python-mode'
-
 [[plugins]]
 on_ft = 'python'
 repo = 'psf/black'
@@ -25,89 +20,6 @@ on_ft = 'csv'
 repo = 'chrisbra/csv.vim'
 
 [[plugins]]
-repo = 'racer-rust/vim-racer'
-on_ft = 'rust'
-hook_source = '''
-    let g:racer_cmd = '/home/'.$USER.'/.cargo/bin/racer'
-    let $RUST_SRC_PATH=systemlist('rustc --print sysroot')[0].'/lib/rustlib/src/rust/src'
-'''
-
-[[plugins]]
-repo = 'Shougo/deoplete.nvim'
-on_i = 1
-merged = 0
-hook_add = '''
-let g:deoplete#enable_at_startup = 1
-inoremap <silent><expr> <C-n>  pumvisible() ? "\<C-n>" : deoplete#manual_complete()
-'''
-hook_post_source = '''
-call deoplete#custom#option({
-\ 'ignore_case': v:true,
-\ 'smart_case': v:true,
-\ 'on_insert_enter': v:false,
-\ 'camel_case': v:true,
-\ 'profile': v:true,
-\})
-call deoplete#custom#var('around', {
-\   'range_above': 2000,
-\   'range_below': 2000,
-\   'mark_above': '[↑]',
-\   'mark_below': '[↓]',
-\   'mark_changes': '[*]',
-\})
-
-" Enable jedi source debug messages
-" call deoplete#custom#option('profile', v:true)
-" call deoplete#enable_logging('DEBUG', '/tmp/deoplete.log')
-" call deoplete#custom#source('jedi', 'is_debug_enabled', v:true)
-'''
-
-[[plugins]]
-repo = 'sebastianmarkow/deoplete-rust'
-on_ft = 'rust'
-on_i = 1
-depends = ['deoplete.nvim', 'echodoc.vim']
-merged = 0
-hook_source = '''
-    let g:deoplete#sources#rust#racer_binary=systemlist('which racer')[0]
-    let g:deoplete#sources#rust#rust_source_path=systemlist('rustc --print sysroot')[0].'/lib/rustlib/src/rust/src'
-    let $RUST_SRC_PATH=systemlist('rustc --print sysroot')[0].'/lib/rustlib/src/rust/src'
-    let g:deoplete#sources#rust#show_duplicates=1
-    let g:deoplete#sources#rust#disable_keymap=1
-    nmap <buffer> gd <plug>DeopleteRustGoToDefinitionDefault
-    nmap <buffer> K  <plug>DeopleteRustShowDocumentation
-'''
-
-[[plugins]]
-repo = 'Shougo/neco-vim'
-merged = 0
-on_ft = ['vim']
-on_i = 1
-depends = ['deoplete.nvim', 'echodoc.vim']
-
-[[plugins]]
-repo = 'deoplete-plugins/deoplete-jedi'
-merged = 0
-on_ft = 'python'
-depends = ['deoplete.nvim', 'echodoc.vim']
-on_i = 1
-hook_add = '''
-let g:deoplete#sources#jedi#python_path = $HOME.'/.pyenv/versions/3.8.3/bin/python'
-let g:deoplete#sources#jedi#show_docstring = 1
-'''
-
-[[plugins]]
-repo = 'Shougo/echodoc.vim'
-merged = 0
-depends = ['deoplete.nvim']
-on_i = 1
-hook_add = '''
-let g:echodoc#enable_at_startup=1
-let g:echodoc#type="floating"
-highlight link EchoDocFloat Pmenu
-'''
-
-[[plugins]]
 on_ft = 'markdown'
 repo = 'godlygeek/tabular'
 
@@ -115,3 +27,10 @@ repo = 'godlygeek/tabular'
 on_ft = 'markdown'
 depends = ['tabular']
 repo = 'plasticboy/vim-markdown'
+
+[[plugins]]
+on_ft = 'python'
+repo = 'mfussenegger/nvim-dap-python'
+hook_source = '''
+lua require('dap-python').setup('/home/zenbook/.pyenv/versions/3.8.3/bin/python')
+'''

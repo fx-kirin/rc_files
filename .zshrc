@@ -34,6 +34,7 @@ zinit load MichaelAquilina/zsh-you-should-use
 zinit load zsh-users/zsh-autosuggestions
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 autoload -Uz vcs_info
+zmodload zsh/zpty
 
 #export PROMPT="$ "
 #export PROMPT="%(?.%(!.%F{white}❯%F{yellow}❯%F{red}.%F{green})$.%F{red}$)%f "
@@ -54,10 +55,11 @@ autoload -U compinit
 compinit
 
 alias ed='cd ,'
-alias ll='exa -hla --git --git-ignore'
+alias ll='exa -hla --git --icons'
 alias la='ls -A'
 alias l='ls -CF'
-alias ls='exa '
+alias ls='exa'
+alias lsp='/bin/ls'
 alias grep='grep --color=auto -i'
 alias fgrep='fgrep --color=auto -i'
 alias egrep='egrep --color=auto -i'
@@ -195,3 +197,5 @@ source ~/.fzf/shell/completion.zsh
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 source /home/$USER/.config/broot/launcher/bash/br
+
+eval $(thefuck --alias)

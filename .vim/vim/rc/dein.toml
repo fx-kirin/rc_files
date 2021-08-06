@@ -147,10 +147,6 @@ repo = 'andymass/vim-matchup'
 repo = 'paulssonkalle/airline-monokai-pro'
 
 [[plugins]]
-repo = 'fx-kirin/completor.vim'
-merged = 0
-
-[[plugins]]
 repo = 'lotabout/skim'
 build = './install --all'
 merged = 0
@@ -171,10 +167,6 @@ depends = ['lotabout/skim']
 [[plugins]]
 repo = 'benwainwright/fzf-project'
 
-# Asynchronous linting/fixing for Vim
-[[plugins]]
-repo = 'dense-analysis/ale'
-
 [[plugins]]
 repo = 'ncm2/float-preview.nvim'
 
@@ -194,4 +186,19 @@ repo = 'lambdalisue/suda.vim'
 repo = 'gcmt/taboo.vim'
 
 [[plugins]]
+repo = 'neovim/nvim-lspconfig'
+
+[[plugins]]
+repo = 'hrsh7th/nvim-compe'
+
+[[plugins]]
+repo = 'andersevenrud/compe-tmux'
+
+[[plugins]]
 repo = 'mfussenegger/nvim-dap'
+
+[[plugins]]
+repo = 'rcarriga/nvim-dap-ui'
+
+[[plugins]]
+repo = 'szw/vim-maximizer'

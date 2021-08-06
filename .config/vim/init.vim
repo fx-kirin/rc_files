@@ -279,48 +279,8 @@ let NERDTreeIgnore = ['\.\.$', '\.$', '\.pyc$', '\.sw.$']
 let NERDTreeShowHidden=1
 let NERDTreeShowBookmarks=1
 
-
-" Completor
-let g:completor_python_binary = $HOME.'/.pyenv/versions/3.8.3/bin/python'
-let g:completor_racer_binary = $HOME.'/.cargo/bin/racer'
-let g:completor_complete_options = ''
-let g:completor_auto_trigger = 0
-" Disabling all file type
-let g:completor_whitelist = []
-let g:completor_complete_options = 'noselect'
-let g:completor_def_split = 'tab'
-nnoremap <silent> <Leader>ss :call completor#do('signature')<CR>
-nnoremap <silent> <Leader>si :call completor#do('signature_insert')<CR>
-nnoremap <silent> <Leader>sa :call completor#do('signature_insert_with_attributes')<CR>
-nnoremap <silent> <Leader>sj :call completor#do('definition')<CR>
-nnoremap <silent> <Leader>sd :call completor#do('doc')<CR>
-
-if executable('pyls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'whitelist': ['python'],
-        \ })
-endif
-
-set completeopt-=preview
-
-" ALE setting
-let g:ale_linters = {'rust': ['cargo', 'rustfmt', 'rls']}
-let g:ale_python_pyre_use_global=1
-let g:airline#extensions#ale#enabled = 1
-let g:ale_floating_preview = 1
-let g:ale_hover_to_floating_preview = 1
-let g:ale_detail_to_floating_preview = 1
-let g:ale_set_loclist = 0
-let g:ale_set_quickfix = 1
-let g:ale_hover_to_preview=1
-let g:ale_cursor_detail=1
-let g:ale_echo_cursor=1
-let g:ale_echo_delay=500
-let g:ale_lint_delay=500
-let g:ale_close_preview_on_insert=1
-highlight SpellCap guisp=Orange
+" Avoid showing message extra message when using completion
+set shortmess+=c
 
 " Echodoc, the plugin to show function signatures.
 let g:echodoc#enable_at_startup=1
@@ -335,19 +295,6 @@ let g:autopep8_disable_show_diff=1
 autocmd FileType python nnoremap <Leader>o :let b:last_line = line(".")<CR>:Black<CR>:Autopep8<CR>:<C-r>=b:last_line<CR><CR>
 autocmd FileType python nnoremap <Leader>i :Isort<CR>
 let g:vim_isort_config_overrides = {'float_to_top': 1}
-
-let g:pymode_python = 'python3'
-let g:pymode_rope = 1 " enable rope
-let g:pymode_lint_cwindow = 0 "disabling Quickfix windows
-let g:pymode_options_colorcolumn = 0 " Disabling color column
-let g:pymode_lint = 0
-let g:pymode_breakpoint = 0
-let g:pymode_rope_completion = 0
-let g:pymode_rope_complete_on_dot = 0
-let g:pymode_rope_autoimport_import_after_complete = 0
-let g:pymode_run_bind = '<F15>'
-let g:pymode_rope_regenerate_on_write = 0
-let g:pymode_trim_whitespaces = 0
 
 let g:neomru#do_validate = 0
 let g:neomru#file_mru_ignore_pattern = '\~$\|\.\%(o\|exe\|dll\|bak\|zwc\|pyc\|sw[po]\)$\|\%(^\|/\)\.\%(hg\|git\|bzr\|svn\)\%($\|/\)\|^\%(\\\\\|/mnt/\|/temp/\|/run/user/\|/tmp/\|\%(/private\)\=/var/folders/\)\|\%(^\%(fugitive\)://\)\|\%(^\%(term\)://\)'
@@ -409,10 +356,6 @@ nnoremap <silent> <C-d>2 :Files ..<CR>
 nnoremap <silent> <C-d>3 :Files ../..<CR>
 nnoremap <silent> <C-d>4 :Files ../../..<CR>
 nnoremap <silent> <C-d>5 :Files ../../../..<CR>
-" call denite#custom#map('insert', '<C-N>', '<denite:move_to_next_line>', 'noremap')
-" call denite#custom#map('insert', '<C-P>', '<denite:move_to_previous_line>', 'noremap')
-" call denite#custom#map('normal', '<C-J>', '<denite:scroll_page_forwards>', 'noremap')
-" call denite#custom#map('normal', '<C-K>', '<denite:scroll_page_backwards>', 'noremap')
 call denite#custom#var('grep', 'command', ['rg'])
 call denite#custom#var('grep', 'default_opts', ['--hidden', '--vimgrep', '--no-heading', '-S'])
 call denite#custom#var('grep', 'recursive_opts', [])
@@ -493,16 +436,137 @@ nnoremap <leader>gg :Ggrep
 
 let g:taboo_tab_format="%r%m"
 
-"lua <<EOF
-"require'nvim-treesitter.configs'.setup {
-"  ensure_installed = "maintained",
-"  highlight = {
-"    enable = true,
-"    disable = {
-"    }
-"  }
-"}
-"EOF
+" Setting for completion-nvim
+let g:completion_enable_snippet = 'UltiSnips'
+let g:completion_matching_ignore_case = 1
+set completeopt=menuone,noinsert,noselect
+nnoremap <silent> Gd <cmd>tab split \| lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> Gh <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> GH <cmd>:Telescope lsp_code_actions<CR>
+nnoremap <silent> GD <cmd>tab split \| lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> Gs <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> Gr <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> GR <cmd>lua vim.lsp.buf.rename()<CR>
+
+" 'hrsh7th/nvim-compe'
+lua << EOF
+require'compe'.setup {
+  enabled = true;
+  autocomplete = true;
+  source = {
+    path = true;
+    buffer = true;
+    nvim_lsp = true;
+    nvim_lua = true;
+    ultisnips = true;
+    tmux = { option = "all_panes"; };
+  };
+}
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.textDocument.completion.completionItem.resolveSupport = {
+  properties = {
+    'documentation',
+    'detail',
+    'additionalTextEdits',
+  }
+}
+
+require'lspconfig'.rust_analyzer.setup {
+  capabilities = capabilities,
+       settings = {
+           ["rust-analyzer"] = {
+               assist = {
+                   importMergeBehavior = "last",
+                   importPrefix = "by_self",
+               },
+               cargo = {
+                   loadOutDirsFromCheck = true
+               },
+               procMacro = {
+                   enable = false
+               },
+               diagnostics = {
+                   disabled = {"macro-error", "unresolved-macro-call"}
+               }
+           }
+       }
+}
+
+require'lspconfig'.pyright.setup{
+  capabilities = capabilities,
+}
+EOF
+
+" mfussenegger/nvim-dap
+lua << EOF
+local dap = require('dap')
+dap.adapters.lldb = {
+  type = 'executable',
+  command = '/usr/bin/lldb-vscode', -- adjust as needed
+  name = "lldb"
+}
+dap.configurations.cpp = {
+  {
+    name = "Launch",
+    type = "lldb",
+    request = "launch",
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+    cwd = '${workspaceFolder}',
+    stopOnEntry = false,
+    args = {},
+    env = function()
+      local variables = {}
+      for k, v in pairs(vim.fn.environ()) do
+        table.insert(variables, string.format("%s=%s", k, v))
+      end
+      return variables
+    end,
+
+    -- if you change `runInTerminal` to true, you might need to change the yama/ptrace_scope setting:
+    --
+    --    echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+    --
+    -- Otherwise you might get the following error:
+    --
+    --    Error on launch: Failed to attach to the target 
+    --
+    -- But you should be aware of the implications:
+    -- https://www.kernel.org/doc/html/latest/admin-guide/LSM/Yama.html
+    runInTerminal = false,
+  },
+}
+
+-- If you want to use this for rust and c, add something like this:
+
+dap.configurations.c = dap.configurations.cpp
+dap.configurations.rust = dap.configurations.cpp
+vim.fn.sign_define('DapBreakpoint', {text='🟥', texthl='', linehl='', numhl=''})
+vim.fn.sign_define('DapStopped', {text='⭐️', texthl='', linehl='', numhl=''})
+EOF
+nnoremap <leader>db :lua require'dap'.toggle_breakpoint()<CR>
+nnoremap <leader>dk :lua require'dap'.step_out()<CR>
+nnoremap <leader>dl :lua require'dap'.step_into()<CR>
+nnoremap <leader>dj :lua require'dap'.step_over()<CR>
+nnoremap <leader>ds :lua require'dap'.stop()<CR>
+nnoremap <leader>dc :lua require'dap'.continue()<CR>
+nnoremap <leader>dk :lua require'dap'.up()<CR>
+nnoremap <leader>dj :lua require'dap'.down()<CR>
+nnoremap <leader>d_ :lua require'dap'.run_last()<CR>
+nnoremap <leader>dr :lua require'dap'.repl.open({}, 'vsplit')<CR><C-w>l
+nnoremap <leader>di :lua require'dap.ui.variables'.hover()<CR>
+vnoremap <leader>di :lua require'dap.ui.variables'.visual_hover()<CR>
+nnoremap <leader>d? :lua require'dap.ui.variables'.scopes()<CR>
+nnoremap <leader>de :lua require'dap'.set_exception_breakpoints({"all"})<CR>
+nnoremap <leader>da :lua require'debugHelper'.attach()<CR>
+nnoremap <leader>dA :lua require'debugHelper'.attachToRemote()<CR>
+nnoremap <leader>di :lua require'dap.ui.widgets'.hover()<CR>
+nnoremap <leader>d? :lua local widgets=require'dap.ui.widgets';widgets.centered_float(widgets.scopes)<CR>
+
+let g:maximizer_set_default_mapping = 0
+nnoremap <silent> <C-w>m :MaximizerToggle!<CR>
 
 if filereadable(expand("~/.nvim/bundle/snake/plugin/snake.vim"))
     source ~/.cache/dein/repos/github.com/amoffat/snake/plugin/snake.vim
