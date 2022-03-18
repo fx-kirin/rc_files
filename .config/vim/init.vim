@@ -187,35 +187,36 @@ let NERDTreeMapOpenInTab='<ENTER>'
 
 let s:local_session_directory = xolox#misc#path#merge(getcwd(), '.nvimsessions')
 if isdirectory(s:local_session_directory) && len(v:argv) <= 1 && getcwd() != $HOME
-  let g:session_directory = s:local_session_directory
-  silent exec "!easynohup guake -i " $GUAKE_TAB_UUID " --rename-tab \"vim "expand('%:p:h:t')"\""
+  if expand('~/.nvimsessions') != s:local_session_directory
+    let g:session_directory = s:local_session_directory
+    silent exec "!easynohup guake -i " $GUAKE_TAB_UUID " --rename-tab \"vim "expand('%:p:h:t')"\""
+    if !exists("g:load_only_once_for_vim_session")
+    augroup PluginSession
+      au VimEnter * nested silent! call xolox#session#auto_load()
+      au VimLeavePre * silent! call xolox#session#auto_save()
+      au VimLeavePre * silent! call xolox#session#auto_unlock()
+      au BufEnter * silent! call xolox#session#auto_dirty_check()
+    augroup END
+    let g:load_only_once_for_vim_session = 1
+    endif
+  set sessionoptions-=help
+  let g:session_autosave = 'yes'
+  let g:session_autoload = 'yes'
+  let g:session_autosave_periodic = 1
+  let g:session_autosave_silent = 1
+  let g:session_verbose_messages = 0
+  endif
 else
-  let g:session_directory = '~/.nvimsessions'
   if len(v:argv) <= 1
     silent exec "!easynohup guake -i " $GUAKE_TAB_UUID " --rename-tab \"vim "join(v:argv[1:], " ")"\""
   else
     silent exec "!easynohup guake -i " $GUAKE_TAB_UUID " --rename-tab \"vim "expand('%:t')"\""
   endif
+  let g:session_autoload = 'no'
 endif
 autocmd VimLeave * silent exec "!easynohup guake -i " $GUAKE_TAB_UUID " --rename-tab " whoami
 unlet s:local_session_directory
 
-set sessionoptions-=help
-let g:session_autosave = 'yes'
-let g:session_autoload = 'yes'
-let g:session_autosave_periodic = 1
-let g:session_autosave_silent = 1
-let g:session_verbose_messages = 0
-
-if !exists("g:load_only_once_for_vim_session")
-augroup PluginSession
-  au VimEnter * nested silent! call xolox#session#auto_load()
-  au VimLeavePre * silent! call xolox#session#auto_save()
-  au VimLeavePre * silent! call xolox#session#auto_unlock()
-  au BufEnter * silent! call xolox#session#auto_dirty_check()
-augroup END
-let g:load_only_once_for_vim_session = 1
-endif
 
 " Tmux Slime Settings
 let g:slime_target = "tmux"
@@ -292,7 +293,7 @@ let g:autopep8_ignore="E402,E265"
 let g:autopep8_max_line_length=255
 let g:autopep8_disable_show_diff=1
 
-autocmd FileType python nnoremap <Leader>o :let b:last_line = line(".")<CR>:Black<CR>:Autopep8<CR>:<C-r>=b:last_line<CR><CR>
+autocmd FileType python nnoremap <Leader>o :let b:last_line = line(".")<CR>:Autopep8<CR>:<C-r>=b:last_line<CR><CR>
 autocmd FileType python nnoremap <Leader>i :Isort<CR>
 let g:vim_isort_config_overrides = {'float_to_top': 1}
 
@@ -440,13 +441,13 @@ let g:taboo_tab_format="%r%m"
 let g:completion_enable_snippet = 'UltiSnips'
 let g:completion_matching_ignore_case = 1
 set completeopt=menuone,noinsert,noselect
-nnoremap <silent> Gd <cmd>tab split \| lua vim.lsp.buf.definition()<CR>
-nnoremap <silent> Gh <cmd>lua vim.lsp.buf.hover()<CR>
-nnoremap <silent> GH <cmd>:Telescope lsp_code_actions<CR>
-nnoremap <silent> GD <cmd>tab split \| lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> Gs <cmd>lua vim.lsp.buf.signature_help()<CR>
-nnoremap <silent> Gr <cmd>lua vim.lsp.buf.references()<CR>
-nnoremap <silent> GR <cmd>lua vim.lsp.buf.rename()<CR>
+nnoremap <silent> <leader>sd <cmd>tab split \| lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> <leader>sh <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> <leader>sH <cmd>:Telescope lsp_code_actions<CR>
+nnoremap <silent> <leader>sD <cmd>tab split \| lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> <leader>ss <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> <leader>sr <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> <leader>sR <cmd>lua vim.lsp.buf.rename()<CR>
 
 " 'hrsh7th/nvim-compe'
 lua << EOF
@@ -567,6 +568,12 @@ nnoremap <leader>d? :lua local widgets=require'dap.ui.widgets';widgets.centered_
 
 let g:maximizer_set_default_mapping = 0
 nnoremap <silent> <C-w>m :MaximizerToggle!<CR>
+
+function! SearchAndReturnMatches(regex)
+    execute "!grep -oP \"".a:regex."\" %"
+endfunction
+
+command! -bang -nargs=* SearchResult call SearchAndReturnMatches(<q-args>)
 
 if filereadable(expand("~/.nvim/bundle/snake/plugin/snake.vim"))
     source ~/.cache/dein/repos/github.com/amoffat/snake/plugin/snake.vim

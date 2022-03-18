@@ -4,6 +4,7 @@
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
 
 source ~/.zprofile
 export ZPROFILE_LOADED=1
@@ -86,7 +87,7 @@ autoload -Uz colors
 colors
 if [ $USER == "zenbook" ]; then
     if [ -n "$GUAKE_TAB_UUID" ]; then
-        test $(tmux list-panes | wc -l) -eq 1 && easynohup guake -i $GUAKE_TAB_UUID --rename-tab=$(whoami);
+        test $(tmux list-panes | wc -l) -eq 1 && test $(tmux list-windows | wc -l) -eq 1 && easynohup guake -i $GUAKE_TAB_UUID --rename-tab=$(whoami);
     fi
 else
 fi

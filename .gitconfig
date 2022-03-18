@@ -1,12 +1,13 @@
 [user]
-	email = fx.kirin@gmail.com
-	name = fx_kirin
+    email = fx.kirin@gmail.com
+    name = fx_kirin
 [core]
     pager = delta
 [webui]
-	autoupdate = true
+    autoupdate = true
 [alias]
-	webui = !/home/zenbook/.git-webui/release/libexec/git-core/git-webui
+    webui = !/home/zenbook/.git-webui/release/libexec/git-core/git-webui
+    graph = log --graph --date=short --pretty=\"format:%C(yellow)%h %C(cyan)%ad %C(green)%an%Creset%x09%s %C(red)%d%Creset\"
 [interactive]
     diffFilter = delta --color-only
 [delta]
